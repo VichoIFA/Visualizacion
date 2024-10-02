@@ -11,5 +11,5 @@ fuente = pd.read_csv(ruta)
 df_html = fuente.head().to_html()
 
 def Index(request):
-    return HttpResponse(df_html)
-    #return render(request, 'graficomuestra.html')
+    #return HttpResponse(df_html)
+    return render(request, 'graficomuestra.html')
