@@ -22,11 +22,15 @@ def Index(request):
     Producto2 = [(tabla[tabla["Age"] == edad]["Product_Category_2"].fillna(0).sum()/1000000) for edad in Rango_edades]
     Producto3 = [(tabla[tabla["Age"] == edad]["Product_Category_3"].fillna(0).sum()/1000000) for edad in Rango_edades]
     
-    return render(request, 'graficomuestra.html', {
+    data = {
         "producto1" : Producto1,
         "producto2" : Producto2,
         "producto3" : Producto3,
-        "rangoEdad" : Rango_edades
+    }
+    
+    return render(request, 'graficomuestra.html', {
+        'data' : data,
+        'labels' : Rango_edades
     })
     
 
