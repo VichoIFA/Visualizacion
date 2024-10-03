@@ -1,58 +1,81 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fokin sarmiento</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}" >
+    <title>Página principal</title>
+    <script src="{% static 'chart.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
 </head>
 
 <body> 
 
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Dropdown
-            </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-            </li>
-        </ul>
-        <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
+    <style>
+        .custom-navbar {
+          background-color: #f57f40; /* Cambia a cualquier color que desees */
+        }
+      </style>
+      
+      <nav class="navbar custom-navbar">
+        <div class="container-fluid d-flex align-items-center"> <!-- Añadir d-flex y align-items-center -->
+          <a class="navbar-brand d-flex align-items-center" href="#"> <!-- Añadir d-flex y align-items-center -->
+            <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="48" class="d-inline-block align-text-top">
+            <h3 class="mb-0 ms-2">Mayorista 9</h3> <!-- Añadir ms-2 para margen a la izquierda -->
+          </a>
         </div>
-    </div>
-    </nav>
+      </nav>
+      
+    <h3>Grafico de ventas de categoria de producto (en millones) segun rango de edad</h3>
+    <canvas id="mainChart" width="25" height="25"></canvas>
+    <script>
+        const rangoEdad = ['0-17', '18-25', '26-35', '36-45', '46-50','51-55','55+'];
+        const producto1 = [0.076775, 0.509371, 1.166945, 0.604438, 0.262424, 0.222313, 0.13045];
+        const producto2 = [0.096155, 0.654936, 1.473278, 0.750081, 0.315572, 0.26757, 0.147356];
+        const producto3 = [0.057725, 0.388041, 0.846624, 0.424412, 0.173059, 0.146334, 0.077134];
 
-    <div class="container mt-5">
-        <h1>Bienvenido a Mi Aplicación</h1>
-        <p>Este es el contenido principal de tu página.</p>
-    </div>
-    
+        const mainChartData = {
+            labels: rangoEdad,
+            datasets: [
+                {
+                    label: 'Ventas producto 1',
+                    data: producto1,
+                    backgroundColor: '#CE2024',
+                    borderColor: '#CE2024',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Ventas producto 2',
+                    data: producto2,
+                    backgroundColor: '#11D6C3',
+                    borderColor: '#11D6C3',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Ventas producto 3',
+                    data: producto3,
+                    backgroundColor: '#DEE810',
+                    borderColor: '#DEE810',
+                    borderWidth: 1
+                }
+            ]
+        };
+
+
+        var mainChartConfig = {
+            type: 'bar',  // Tipo de gráfico
+            data: mainChartData,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        };
+
+        var mainChartCtx = document.getElementById('mainChart').getContext('2d');
+        var mainChart = new Chart(mainChartCtx, mainChartConfig);
+    </script>
 </body>
 </html>
