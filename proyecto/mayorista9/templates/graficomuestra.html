@@ -13,69 +13,126 @@
 
     <style>
         .custom-navbar {
-          background-color: #f57f40; /* Cambia a cualquier color que desees */
+            background-color: #ffffff; /* Cambia a cualquier color que desees */
         }
-      </style>
-      
-      <nav class="navbar custom-navbar">
-        <div class="container-fluid d-flex align-items-center"> <!-- Añadir d-flex y align-items-center -->
-          <a class="navbar-brand d-flex align-items-center" href="#"> <!-- Añadir d-flex y align-items-center -->
-            <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="48" class="d-inline-block align-text-top">
-            <h3 class="mb-0 ms-2">Mayorista 9</h3> <!-- Añadir ms-2 para margen a la izquierda -->
-          </a>
+        .sidebar {
+            height: 0 auto; /* Altura de la sidebar */
+            background-color: #ff8a30; /* Color de fondo de la sidebar */
+        }
+
+        .sidebar {
+            height: 100vh; /* Altura de la sidebar */
+            background-color: #ff8a30; /* Cambia este valor al color que desees */
+            color: #000000; /* Cambia el color del texto a blanco */
+        }
+        .sidebar .nav-link {
+            font-size: 18px; /* Tamaño de letra */
+            color: #000000; /* Cambia el color de los enlaces a blanco */
+            font-weight: bold; /* Esto hace que el texto esté en negrita */
+        }
+        .sidebar .nav-link:hover {
+            background-color: #fc8128; /* Cambia el color de fondo al pasar el mouse sobre el enlace */
+            color: #000000; /* Color del texto al pasar el mouse */
+        }
+        body {
+            background-color: #e8e8e8; /* Cambia este valor al color que desees */
+        }
+    </style>
+
+    <nav class="navbar custom-navbar">
+        <div class="container-fluid d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="48" class="d-inline-block align-text-top">
+                <h3 class="mb-0 ms-2">Mayorista 9</h3>
+            </a>
         </div>
-      </nav>
-      
-    <h3>Grafico de ventas de categoria de producto (en millones) segun rango de edad</h3>
-    <canvas id="mainChart" width="25" height="25"></canvas>
-    <script>
-        const rangoEdad = ['0-17', '18-25', '26-35', '36-45', '46-50','51-55','55+'];
-        const producto1 = [0.076775, 0.509371, 1.166945, 0.604438, 0.262424, 0.222313, 0.13045];
-        const producto2 = [0.096155, 0.654936, 1.473278, 0.750081, 0.315572, 0.26757, 0.147356];
-        const producto3 = [0.057725, 0.388041, 0.846624, 0.424412, 0.173059, 0.146334, 0.077134];
+    </nav>
 
-        const mainChartData = {
-            labels: rangoEdad,
-            datasets: [
-                {
-                    label: 'Ventas producto 1',
-                    data: producto1,
-                    backgroundColor: '#CE2024',
-                    borderColor: '#CE2024',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Ventas producto 2',
-                    data: producto2,
-                    backgroundColor: '#11D6C3',
-                    borderColor: '#11D6C3',
-                    borderWidth: 1
-                },
-                {
-                    label: 'Ventas producto 3',
-                    data: producto3,
-                    backgroundColor: '#DEE810',
-                    borderColor: '#DEE810',
-                    borderWidth: 1
-                }
-            ]
-        };
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-3 col-lg-2 sidebar d-none d-md-block">
+                <div class="position-sticky">
+                    <h5 class="p-3">Menú</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard 2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard 3</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
-
-        var mainChartConfig = {
-            type: 'bar',  // Tipo de gráfico
-            data: mainChartData,
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <h6 style="margin-top: 100px; margin-left : 270px;">Gráfico de ventas de categoría de producto (en millones) según rango de edad</h6>
+                <canvas id="mainChart"></canvas>
+                <style>
+                    #mainChart {
+                        max-width: 800px; /* Cambia este valor al tamaño que desees */
+                        max-height: 500px; /* Cambia este valor al tamaño que desees */
+                        width: 100%;
+                        height: auto;
+                        margin : 0 auto;
                     }
-                }
-            }
-        };
+                </style>
+                <script>
+                    const rangoEdad = ['0-17', '18-25', '26-35', '36-45', '46-50','51-55','55+'];
+                    const producto1 = [0.076775, 0.509371, 1.166945, 0.604438, 0.262424, 0.222313, 0.13045];
+                    const producto2 = [0.096155, 0.654936, 1.473278, 0.750081, 0.315572, 0.26757, 0.147356];
+                    const producto3 = [0.057725, 0.388041, 0.846624, 0.424412, 0.173059, 0.146334, 0.077134];
 
-        var mainChartCtx = document.getElementById('mainChart').getContext('2d');
-        var mainChart = new Chart(mainChartCtx, mainChartConfig);
-    </script>
+                    const mainChartData = {
+                        labels: rangoEdad,
+                        datasets: [
+                            {
+                                label: 'Producto 1',
+                                data: producto1,
+                                backgroundColor: '#CE2024',
+                                borderColor: '#CE2024',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Producto 2',
+                                data: producto2,
+                                backgroundColor: '#11D6C3',
+                                borderColor: '#11D6C3',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'producto 3',
+                                data: producto3,
+                                backgroundColor: '#DEE810',
+                                borderColor: '#DEE810',
+                                borderWidth: 1
+                            }
+                        ]
+                    };
+
+                    var mainChartConfig = {
+                        type: 'bar',  // Tipo de gráfico
+                        data: mainChartData,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    };
+
+                    var mainChartCtx = document.getElementById('mainChart').getContext('2d');
+                    var mainChart = new Chart(mainChartCtx, mainChartConfig);
+                </script>
+            </main>
+        </div>
+    </div>
+
 </body>
 </html>
