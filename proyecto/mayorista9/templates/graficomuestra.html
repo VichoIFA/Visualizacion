@@ -7,50 +7,60 @@
     <title>Página principal</title>
     <script src="{% static 'chart.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
-</head>
-
-<body> 
-
     <style>
         .custom-navbar {
-            background-color: #ffffff; /* Cambia a cualquier color que desees */
+            background-color: #f5742a;
         }
         .sidebar {
-            height: 0 auto; /* Altura de la sidebar */
-            background-color: #ff8a30; /* Color de fondo de la sidebar */
-        }
-
-        .sidebar {
-            height: 100vh; /* Altura de la sidebar */
-            background-color: #ff8a30; /* Cambia este valor al color que desees */
-            color: #000000; /* Cambia el color del texto a blanco */
+            height: 100vh;
+            width: 190px;
+            background-color: #ff8a30;
+            color: #000000;
+            box-shadow:-3px 0 10px 0 #555;
         }
         .sidebar .nav-link {
-            font-size: 18px; /* Tamaño de letra */
-            color: #000000; /* Cambia el color de los enlaces a blanco */
-            font-weight: bold; /* Esto hace que el texto esté en negrita */
+            font-size: 18px;
+            color: #000000; 
+            font-weight: bold;
         }
         .sidebar .nav-link:hover {
-            background-color: #fc8128; /* Cambia el color de fondo al pasar el mouse sobre el enlace */
-            color: #000000; /* Color del texto al pasar el mouse */
+            background-color: #fc8128; 
+            color: #000000; 
         }
         body {
-            background-color: #e8e8e8; /* Cambia este valor al color que desees */
+            background-color: #e8e8e8;
+        }
+        .card {
+            height: 550px; 
+        }
+        #mainChart {
+            width: 100% !important; 
+            height: 100% !important; 
         }
     </style>
+</head>
 
-    <nav class="navbar custom-navbar">
+<body>
+    <nav class="navbar custom-navbar"  style = "border-bottom: 5px solid #e8e8e8;">
         <div class="container-fluid d-flex align-items-center">
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="48" class="d-inline-block align-text-top">
                 <h3 class="mb-0 ms-2">Mayorista 9</h3>
             </a>
+
+            <div class="d-flex ms-2">
+                <h6 class="mb-0 ms-3">Perfil</h6>
+                <h6 class="mb-0 ms-3">Opción 1</h6>
+                <h6 class="mb-0 ms-3">Opción 2</h6>
+            </div>
+
+            <img src="{% static 'images/perfil.png' %}" alt="Descripción de la imagen" width="50" height="50" class="rounded-circle">   
         </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container-fluid" style = "border-bottom: 2px solid #e8e8e8; border-right:  2px solid #e8e8e8;">
         <div class="row">
-            <nav class="col-md-3 col-lg-2 sidebar d-none d-md-block">
+            <nav class="col-md-3 col-lg-2 sidebar d-none d-md-block" style = "padding-left:5px;">
                 <div class="position-sticky">
                     <h5 class="p-3">Menú</h5>
                     <ul class="nav flex-column">
@@ -71,68 +81,84 @@
             </nav>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <h6 style="margin-top: 100px; margin-left : 270px;">Gráfico de ventas de categoría de producto (en millones) según rango de edad</h6>
-                <canvas id="mainChart"></canvas>
-                <style>
-                    #mainChart {
-                        max-width: 800px; /* Cambia este valor al tamaño que desees */
-                        max-height: 500px; /* Cambia este valor al tamaño que desees */
-                        width: 100%;
-                        height: auto;
-                        margin : 0 auto;
-                    }
-                </style>
+                <div style="max-width: 60rem; padding-right: 100px; padding-top: 20px">
+                    <div class="card text-center shadow-lg" style="border-radius: 15px; overflow: hidden;">
+                        <div class="card-header text-white" style="background-color: gray;">
+                            <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                        </div>
+                        <div class="card-body p-4 bg-light">
+                            <div style="width: 100%; height: 100%; padding: 10px;">
+                                <canvas id="mainChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <script>
-                    const rangoEdad = ['0-17', '18-25', '26-35', '36-45', '46-50','51-55','55+'];
-                    const producto1 = [0.076775, 0.509371, 1.166945, 0.604438, 0.262424, 0.222313, 0.13045];
-                    const producto2 = [0.096155, 0.654936, 1.473278, 0.750081, 0.315572, 0.26757, 0.147356];
-                    const producto3 = [0.057725, 0.388041, 0.846624, 0.424412, 0.173059, 0.146334, 0.077134];
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const rangoEdad = ['0-17', '18-25', '26-35', '36-45', '46-50','51-55','55+'];
+                        const producto1 = [0.076775, 0.509371, 1.166945, 0.604438, 0.262424, 0.222313, 0.13045];
+                        const producto2 = [0.096155, 0.654936, 1.473278, 0.750081, 0.315572, 0.26757, 0.147356];
+                        const producto3 = [0.057725, 0.388041, 0.846624, 0.424412, 0.173059, 0.146334, 0.077134];
 
-                    const mainChartData = {
-                        labels: rangoEdad,
-                        datasets: [
-                            {
-                                label: 'Producto 1',
-                                data: producto1,
-                                backgroundColor: '#CE2024',
-                                borderColor: '#CE2024',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'Producto 2',
-                                data: producto2,
-                                backgroundColor: '#11D6C3',
-                                borderColor: '#11D6C3',
-                                borderWidth: 1
-                            },
-                            {
-                                label: 'producto 3',
-                                data: producto3,
-                                backgroundColor: '#DEE810',
-                                borderColor: '#DEE810',
-                                borderWidth: 1
-                            }
-                        ]
-                    };
+                        const mainChartData = {
+                            labels: rangoEdad,
+                            datasets: [
+                                {
+                                    label: 'Producto 1',
+                                    data: producto1,
+                                    backgroundColor: '#CE2024',
+                                    borderColor: '#CE2024',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Producto 2',
+                                    data: producto2,
+                                    backgroundColor: '#11D6C3',
+                                    borderColor: '#11D6C3',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Producto 3',
+                                    data: producto3,
+                                    backgroundColor: '#DEE810',
+                                    borderColor: '#DEE810',
+                                    borderWidth: 1
+                                }
+                            ]
+                        };
 
-                    var mainChartConfig = {
-                        type: 'bar',  // Tipo de gráfico
-                        data: mainChartData,
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+
+                        var mainChartConfig = {
+                            type: 'bar',  // Tipo de gráfico
+                            data: mainChartData,
+                            options: {
+                                responsive: true, 
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Rango de Edad'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Compras (en millones)'
+                                        },
+                                        beginAtZero: true
+                                    }
                                 }
                             }
-                        }
-                    };
+                        };
 
-                    var mainChartCtx = document.getElementById('mainChart').getContext('2d');
-                    var mainChart = new Chart(mainChartCtx, mainChartConfig);
+                        var mainChartCtx = document.getElementById('mainChart').getContext('2d');
+                        var mainChart = new Chart(mainChartCtx, mainChartConfig);
+                    });
                 </script>
             </main>
         </div>
     </div>
-
 </body>
 </html>
