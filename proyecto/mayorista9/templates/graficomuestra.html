@@ -91,47 +91,51 @@
                 </div>
             </nav>
 
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div style="max-width: 52%; margin-left: -10px; padding-top: 330px;"> <!-- si queremos realizar cambios de tamaños, cambiar max-width -->
-                    <div class="card text-center shadow-lg" style="border-radius: 15px; overflow: hidden; height: 100%;">
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="padding-top: 400px ;">
+                <div class="d-flex justify-content-between align-items-center" style="height: 200px;">
+                    <!-- Primer gráfico -->
+                    <div class="card text-center shadow-lg" style="border-radius: 15px; overflow: hidden; width: 45%; height: 190%;">
                         <div class="card-header text-white" style="background-color: gray;">
-                            <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                            <h5 class="card-title mb-0">Compras (en millones) por rango de edad - Producto 1</h5>
                         </div>
-                        <div class="card-body p-4 bg-light">
-                            <div style="width: 100%; height: 100%;">
-                                <canvas id="mainChart"></canvas>
-                            </div>
+                        <div class="card-body p-4 bg-light" styel= "max-width: 52%;">
+                            <canvas id="mainChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Segundo gráfico -->
+                    <div class="card text-center shadow-lg" style="border-radius: 15px; overflow: hidden; width: 45%; height: 190%;  margin-right: 30px;">
+                        <div class="card-header text-white" style="background-color: gray;">
+                            <h5 class="card-title mb-0">Compras de Soleros segun categoría de ciudad</h5>
+                        </div>
+                        <div class="card-body p-4 bg-light" styel="height: 100px;">
+                            <canvas id="mainChart2"></canvas>
                         </div>
                     </div>
                 </div>
 
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
-                        const rangoEdad = ['0-17', '18-25', '26-35', '36-45', '46-50','51-55','55+'];
-                        const producto1 = [0.076775, 0.509371, 1.166945, 0.604438, 0.262424, 0.222313, 0.13045];
-                        const producto2 = [0.096155, 0.654936, 1.473278, 0.750081, 0.315572, 0.26757, 0.147356];
-                        const producto3 = [0.057725, 0.388041, 0.846624, 0.424412, 0.173059, 0.146334, 0.077134];
-
-                        const mainChartData = {
-                            labels: rangoEdad,
+                        const mainChartData1 = {
+                            labels: {{ labels1|safe }},
                             datasets: [
                                 {
                                     label: 'Producto 1',
-                                    data: producto1,
+                                    data: {{ producto1|safe }},
                                     backgroundColor: '#CE2024',
                                     borderColor: '#CE2024',
                                     borderWidth: 1
                                 },
                                 {
                                     label: 'Producto 2',
-                                    data: producto2,
+                                    data: {{ producto2|safe }},
                                     backgroundColor: '#11D6C3',
                                     borderColor: '#11D6C3',
                                     borderWidth: 1
                                 },
                                 {
                                     label: 'Producto 3',
-                                    data: producto3,
+                                    data: {{ producto3|safe }},
                                     backgroundColor: '#DEE810',
                                     borderColor: '#DEE810',
                                     borderWidth: 1
@@ -139,12 +143,12 @@
                             ]
                         };
 
-
-                        var mainChartConfig = {
-                            type: 'bar',  // Tipo de gráfico
-                            data: mainChartData,
+                        var mainChartCtx1 = document.getElementById('mainChart').getContext('2d');
+                        var mainChart1 = new Chart(mainChartCtx1, {
+                            type: 'bar',
+                            data: mainChartData1,
                             options: {
-                                responsive: true, 
+                                responsive: true,
                                 maintainAspectRatio: false,
                                 scales: {
                                     x: {
@@ -162,9 +166,52 @@
                                     }
                                 }
                             }
+                        });
+                    });
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const mainChartData2 = {
+                            labels: {{ labels2|safe }},
+                            datasets: [
+                                {
+                                    label: 'Solteros',
+                                    data: {{ solteros|safe }},
+                                    backgroundColor: ["#e36200", "#34de00", "#b500de"],
+                                    borderColor: ["#e36200", "#34de00", "#b39200"],
+                                    borderWidth: 1
+                                }
+                            ]
                         };
-                        var mainChartCtx = document.getElementById('mainChart').getContext('2d');
-                        var mainChart = new Chart(mainChartCtx, mainChartConfig);
+
+                        var mainChartCtx2 = document.getElementById('mainChart2').getContext('2d');
+                        var mainChart2 = new Chart(mainChartCtx2, {
+                            type: 'bar',
+                            data: mainChartData2,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false // Oculta la leyenda
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Categoría de ciudad'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Compras de Solteros'
+                                        },
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
                     });
                 </script>
             </main>
