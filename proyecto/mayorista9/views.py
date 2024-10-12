@@ -34,16 +34,37 @@ def Index(request):
     
     Solteros =[int(SolterosA), int(SolterosB), int(SolterosC)]
     
+    #Extraccion datos card 1 (top 3)
+    sumaTotal = []
+    for x in range(len(Producto1)):
+        sumaTotal.append(Producto1[x]+Producto2[x]+Producto3[x])
+    
+    suma1 = round(max(sumaTotal), 2)
+    edadesMax1 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
+    sumaTotal[sumaTotal.index(max(sumaTotal))]-=3
+    
+    suma2 = round(max(sumaTotal), 2)
+    edadesMax2 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
+    sumaTotal[sumaTotal.index(max(sumaTotal))]-=3
+    
+    suma3 = round(max(sumaTotal), 2)
+    edadesMax3 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
+    
     context = {
         'labels1' : Rango_edades,
         'producto1' : Producto1,
         'producto2' : Producto2,
         'producto3' : Producto3,
         'labels2' : ["A","B","C"],
-        'solteros' : Solteros
+        'solteros' : Solteros,
+        'suma1' : suma1,
+        'suma2' : suma2,
+        'suma3' : suma3,
+        'edadMax1' : edadesMax1,
+        'edadMax2' : edadesMax2,
+        'edadMax3' : edadesMax3
     }
-    
-    print(type(SolterosA))
+
     return render(request, 'graficomuestra.html', context)
     
 
