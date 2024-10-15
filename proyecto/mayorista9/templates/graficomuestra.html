@@ -321,29 +321,60 @@
                     });
 
                     document.addEventListener("DOMContentLoaded", function () {
+                        var hombres = {{hombresUnicos|safe}}; // Datos dinámicos
+                        var mujeres = {{mujeresUnicas|safe}};
+                        var total = hombres + mujeres;
+
                         var ctx = document.getElementById('gaugeChart').getContext('2d');
+                        
                         var gaugeChart = new Chart(ctx, {
                             type: 'doughnut',
                             data: {
                                 labels: ['Hombres', 'Mujeres'],
                                 datasets: [{
-                                    data: [{{hombresUnicos|safe}}, {{mujeresUnicas|safe}}], // Ajusta los valores según tu necesidad
-                                    backgroundColor: ['#0094f7', '#ff0000'], // Color del progreso y el resto
+                                    data: [hombres, mujeres],
+                                    backgroundColor: ['#0094f7', '#ff0000'], // Azul para hombres, rojo para mujeres
                                     borderWidth: 0
                                 }]
                             },
                             options: {
-                                responsive: true, // Hace que el gráfico sea responsivo
-                                maintainAspectRatio: false, // Permite que el gráfico llene todo el espacio
-                                rotation: 270, // Rotación para que empiece desde abajo
-                                circumference: 180, // Muestra solo la mitad del gráfico (gauge)
-                                cutout: '80%', // Controla el grosor del gráfico
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                rotation: 270, // Comienza desde abajo
+                                circumference: 180, // Muestra solo la mitad superior del gráfico
+                                cutout: '70%', // Grosor del anillo
                                 plugins: {
                                     legend: {
                                         display: false // Oculta la leyenda
+                                    },
+                                    tooltip: {
+                                        enabled: true // Oculta los tooltips
+                                    }
+                                },
+                                layout: {
+                                    padding: {
+                                        bottom: 10 // Espacio para que el texto se vea bien
                                     }
                                 }
-                            }
+                            },
+                            plugins: [{
+                                // Plugin para mostrar texto en el centro
+                                afterDraw: function (chart) {
+                                    var { width, height, ctx } = chart;
+                                    ctx.restore();
+                                    var fontSize = (height / 114).toFixed(2);
+                                    ctx.font = `${fontSize}em sans-serif`;
+                                    ctx.textBaseline = "middle";
+                                    ctx.fillStyle = "#666"; // Color del texto
+
+                                    var text = total + " Clientes",
+                                        textX = Math.round((width - ctx.measureText(text).width) / 2),
+                                        textY = height / 1.45; // Ajusta para centrar bien el texto
+
+                                    ctx.fillText(text, textX, textY);
+                                    ctx.save();
+                                }
+                            }]
                         });
                     });
                 </script>
