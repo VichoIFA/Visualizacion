@@ -50,6 +50,13 @@ def Index(request):
     suma3 = round(max(sumaTotal), 2)
     edadesMax3 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
     
+    tablaUnicos = tabla.drop_duplicates(subset=['User_ID'], keep='first')
+    
+    HombresUnicos = tablaUnicos[tablaUnicos["Gender"] == 'M']['User_ID'].count()
+    MujeresUnicas = tablaUnicos[tablaUnicos["Gender"] == 'F']['User_ID'].count()
+    
+    print(HombresUnicos)
+    print(MujeresUnicas)
     context = {
         'labels1' : Rango_edades,
         'producto1' : Producto1,
@@ -62,7 +69,9 @@ def Index(request):
         'suma3' : suma3,
         'edadMax1' : edadesMax1,
         'edadMax2' : edadesMax2,
-        'edadMax3' : edadesMax3
+        'edadMax3' : edadesMax3,
+        'hombresUnicos' : HombresUnicos,
+        'mujeresUnicas' : MujeresUnicas
     }
 
     return render(request, 'graficomuestra.html', context)

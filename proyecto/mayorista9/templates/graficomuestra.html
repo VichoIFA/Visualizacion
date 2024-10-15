@@ -180,10 +180,10 @@
 
                     <div class="card text-center shadow-lg" style="border-radius: 15px; width: 30%; height: 250px;">
                         <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                            <h5 class="card-title mb-0">Tarjeta 2</h5>
+                            <h5 class="card-title mb-0">Cantidad de clientes por género</h5>
                         </div>
-                        <div class="card-body p-4 bg-light" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                            <p class="card-text">Contenido de la tarjeta 2.</p>
+                        <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                            <canvas id="gaugeChart" style="width:100%; height:100%;"></canvas>
                         </div>
                     </div>
                     
@@ -314,6 +314,33 @@
                                             text: 'Compras de Solteros'
                                         },
                                         beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    });
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var ctx = document.getElementById('gaugeChart').getContext('2d');
+                        var gaugeChart = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Hombres', 'Mujeres'],
+                                datasets: [{
+                                    data: [{{hombresUnicos|safe}}, {{mujeresUnicas|safe}}], // Ajusta los valores según tu necesidad
+                                    backgroundColor: ['#0094f7', '#ff0000'], // Color del progreso y el resto
+                                    borderWidth: 0
+                                }]
+                            },
+                            options: {
+                                responsive: true, // Hace que el gráfico sea responsivo
+                                maintainAspectRatio: false, // Permite que el gráfico llene todo el espacio
+                                rotation: 270, // Rotación para que empiece desde abajo
+                                circumference: 180, // Muestra solo la mitad del gráfico (gauge)
+                                cutout: '80%', // Controla el grosor del gráfico
+                                plugins: {
+                                    legend: {
+                                        display: false // Oculta la leyenda
                                     }
                                 }
                             }
