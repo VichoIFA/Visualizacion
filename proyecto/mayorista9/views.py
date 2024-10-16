@@ -33,7 +33,7 @@ def Index(request):
     SolterosC = tabla[tabla["City_Category"] == "C"]["Marital_Status"].sum()
     
     Solteros =[int(SolterosA), int(SolterosB), int(SolterosC)]
-    
+
     #Extraccion datos card 1 (top 3)
     sumaTotal = []
     for x in range(len(Producto1)):
@@ -50,6 +50,7 @@ def Index(request):
     suma3 = round(max(sumaTotal), 2)
     edadesMax3 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
     
+    #extraccion de datos para los dos graficos semi-circulares
     tablaUnicos = tabla.drop_duplicates(subset=['User_ID'], keep='first')
     
     HombresUnicos = tablaUnicos[tablaUnicos["Gender"] == 'M']['User_ID'].count()
@@ -57,6 +58,16 @@ def Index(request):
     
     solterosUnicos = tablaUnicos[tablaUnicos["Marital_Status"] == 0]['User_ID'].count()
     casadosUnicos = tablaUnicos[tablaUnicos["Marital_Status"] == 1]['User_ID'].count()
+    
+    #extraccion indices
+    cantidadCompraPromedio = round(tabla["Purchase"].mean())
+        
+    cantidadP1 = tabla["Product_Category_1"].sum()
+    cantidadP2 = tabla["Product_Category_2"].sum()
+    cantidadP3 = tabla["Product_Category_3"].sum()
+    cantidadTotal = int(cantidadP1) + int(cantidadP2) + int(cantidadP3)
+    
+    cantidadCompras = int(tabla["User_ID"].count())
     
     context = {
         'labels1' : Rango_edades,
@@ -74,7 +85,10 @@ def Index(request):
         'hombresUnicos' : HombresUnicos,
         'mujeresUnicas' : MujeresUnicas,
         'solterosUnicos' : solterosUnicos,
-        'casadosUnicos' : casadosUnicos
+        'casadosUnicos' : casadosUnicos,
+        'cantidadTotal' : cantidadTotal,
+        'cantidadCompraPromedio' : cantidadCompraPromedio,
+        'cantidadCompras' : cantidadCompras
     }
 
     return render(request, 'graficomuestra.html', context)

@@ -11,8 +11,12 @@
         .custom-navbar {
             background-color: #f5742a;
         }
+        .custom-text {
+            font-size: 40px; 
+            font-weight: bold; 
+        }
         .sidebar {
-            height: 700px;
+            height: 830px;
             width: 190px;
             background-color: #ff8a30;
             color: #000000;
@@ -92,6 +96,41 @@
         .podium-item:nth-child(3) {
             height: 100px; 
         }
+
+        footer {
+            background-color: #040a4a; /* Color de fondo */
+            color: white; /* Color del texto */
+            text-align: center; /* Centra el texto */
+            padding: 1px; /* Reduce el padding */
+            min-height: 30px; /* Establece una altura mínima */
+            font-size: 0.8em; /* Reduce el tamaño de la fuente */
+            position: relative; /* Posicionamiento */
+            bottom: 0; /* Mantiene el footer en la parte inferior */
+            width: 100%; /* Ancho completo */
+        }
+        
+        footer p {
+            margin: 5px 0; /* Espaciado vertical entre párrafos */
+        }
+        
+        footer nav ul {
+            list-style-type: none; /* Quita los puntos de la lista */
+            padding: 0; /* Quita el padding */
+        }
+        
+        footer nav ul li {
+            display: inline; /* Muestra los elementos de la lista en línea */
+            margin: 0 15px; /* Espaciado entre los enlaces */
+        }
+        
+        footer a {
+            color: white; /* Color de los enlaces */
+            text-decoration: none; /* Quita el subrayado */
+        }
+        
+        footer a:hover {
+            text-decoration: underline; /* Subrayado al pasar el ratón */
+        }
     </style>
 </head>
 
@@ -147,79 +186,119 @@
             </nav>
 
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="padding-top: 400px ;">
-                
-                <!-- tarjetas -->
 
-                <div class="d-flex justify-content-around" style="position: absolute; top: 100px; width: 1125px; margin-left: -19px;">
-                    <div class="card text-center shadow-lg" style="border-radius: 15px; width: 30%; height: 250px;">
-                        <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                            <h5 class="card-title mb-0">Compras (millones) en edades que más compran</h5>
+                <div class="container" style="position: absolute; top: 100px; width: 1125px;">
+                    <!-- Fila superior (nuevas tres cartas) -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 150px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">cantidad de compras registradas</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadCompras|safe}}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body p-4 bg-light d-flex align-items-end justify-content-center" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                            <div class="podium">
-                                <div class="podium-item" style="background-color: #9c4600; color: white; position: relative;"> <!-- Cambia el color aquí -->
-                                    <span class="position">3</span>
-                                    <span class="value">{{suma3}}</span>
-                                    <span class="text-over-bar">{{edadMax3}}</span>
+                        <div class="col-md-4">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 150px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Gasto promedio de compra</h5>
                                 </div>
-                                <!-- Primer lugar -->
-                                <div class="podium-item" style="background-color: #d6d01a; color: white; position: relative;"> <!-- Cambia el color aquí -->
-                                    <span class="position">1</span>
-                                    <span class="value">{{suma1}}</span>
-                                    <span class="text-over-bar">{{edadMax1}}</span>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadCompraPromedio|safe}}</p>
                                 </div>
-                                <!-- Segundo lugar -->
-                                <div class="podium-item" style="background-color: #7d7d7d; color: white; position: relative;"> <!-- Cambia el color aquí -->
-                                    <span class="position">2</span>
-                                    <span class="value">{{suma2}}</span>
-                                    <span class="text-over-bar">{{edadMax2}}</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 150px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Cantidad de productos vendidos</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadTotal|safe}}</p>
                                 </div>
                             </div>
                         </div>
                     </div>
+                
+                    <!-- Fila inferior (cartas originales) -->
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px; ">
+                                    <h5 class="card-title mb-0">Cantidad de clientes por género</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
+                                    <canvas id="gaugeChart" style="width:100%; height:100%;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Compras (millones) en edades que más compran</h5>
+                                </div>
 
-                    <div class="card text-center shadow-lg" style="border-radius: 15px; width: 30%; height: 250px;">
-                        <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                            <h5 class="card-title mb-0">Cantidad de clientes por género</h5>
+                                <div class="card-body p-4 bg-light d-flex align-items-end justify-content-center">
+                                    <div class="podium">
+                                        <div class="podium-item" style="background-color: #9c4600; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                            <span class="position">3</span>
+                                            <span class="value">{{suma3}}</span>
+                                            <span class="text-over-bar">{{edadMax3}}</span>
+                                        </div>
+                                        <!-- Primer lugar -->
+                                        <div class="podium-item" style="background-color: #d6d01a; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                            <span class="position">1</span>
+                                            <span class="value">{{suma1}}</span>
+                                            <span class="text-over-bar">{{edadMax1}}</span>
+                                        </div>
+                                        <!-- Segundo lugar -->
+                                        <div class="podium-item" style="background-color: #7d7d7d; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                            <span class="position">2</span>
+                                            <span class="value">{{suma2}}</span>
+                                            <span class="text-over-bar">{{edadMax2}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                            <canvas id="gaugeChart" style="width:100%; height:100%;"></canvas>
-                        </div>
-                    </div>
-                    
-                    <div class="card text-center shadow-lg" style="border-radius: 15px; width: 30%; height: 250px;">
-                        <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                            <h5 class="card-title mb-0">Clientes según estado civil</h5>
-                        </div>
-                        <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                            <canvas id="gaugeChart2" style="width:100%; height:100%;"></canvas>
+                        <div class="col-md-4">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Clientes según estado civil</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
+                                    <canvas id="gaugeChart2" style="width:100%; height:100%;"></canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            
-
-                <div class="d-flex justify-content-between align-items-center position-relative" style="height: 200px;">
-                    <!-- Primer gráfico --> 
-                    <div class="card text-center shadow-lg" style="border-radius: 15px; overflow: hidden; width: 45%; height: 190%;">
-                        <div class="card-header text-white" style="background-color: #0f00b5;">
-                            <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                
+                <div class="row" style="padding-top: 60px">
+                    <div class="d-flex justify-content-between align-items-start position-relative" style="padding-left: 24px;">
+                        <!-- Primer gráfico --> 
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 45%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
+                            <div class="card-header text-white" style="background-color: #0f00b5;">
+                                <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                            </div>
+                            <div class="card-body p-4 bg-light">
+                                <canvas id="mainChart" style="width: 100%; height: auto;"></canvas>
+                            </div>
                         </div>
-                        <div class="card-body p-4 bg-light" styel= "max-width: 52%;">
-                            <canvas id="mainChart"></canvas>
-                        </div>
-                    </div>
-
-                    <!-- Segundo gráfico -->
-                    <div class="card text-center shadow-lg" style="border-radius: 15px; overflow: hidden; width: 45%; height: 190%;  margin-right: 30px;">
-                        <div class="card-header text-white" style="background-color: #0f00b5;">
-                            <h5 class="card-title mb-0">Compras de solteros segun categoría de ciudad</h5>
-                        </div>
-                        <div class="card-body p-4 bg-light" styel="height: 100px;">
-                            <canvas id="mainChart2"></canvas>
+                
+                        <!-- Segundo gráfico -->
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 45%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
+                            <div class="card-header text-white" style="background-color: #0f00b5;">
+                                <h5 class="card-title mb-0">Compras de solteros según categoría de ciudad</h5>
+                            </div>
+                            <div class="card-body p-4 bg-light">
+                                <canvas id="mainChart2" style="width: 100%; height: auto;"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <script>
                     document.addEventListener("DOMContentLoaded", function () {
                         const mainChartData1 = {
@@ -392,7 +471,7 @@
                                 labels: ['Casados', 'Solteros'],
                                 datasets: [{
                                     data: [casados, solteros],
-                                    backgroundColor: ['#0094f7', '#ff0000'], // Azul para casados, rojo para solteros
+                                    backgroundColor: ['#e300eb', '#fff700'], // Azul para casados, rojo para solteros
                                     borderWidth: 0
                                 }]
                             },
@@ -442,3 +521,9 @@
         </div>
     </div>
 </body>
+
+<footer>
+    <p>&copy; 2024 Mayorista9. Todos los derechos reservados.</p>
+    <p>Contáctanos: DinoTrayStudio@gmail.com</a></p>
+    </nav>
+</footer>
