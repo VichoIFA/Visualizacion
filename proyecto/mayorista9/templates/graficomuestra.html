@@ -189,10 +189,10 @@
                     
                     <div class="card text-center shadow-lg" style="border-radius: 15px; width: 30%; height: 250px;">
                         <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                            <h5 class="card-title mb-0">Tarjeta 3</h5>
+                            <h5 class="card-title mb-0">Clientes según estado civil</h5>
                         </div>
-                        <div class="card-body p-4 bg-light" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
-                            <p class="card-text">Contenido de la tarjeta 3.</p>
+                        <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+                            <canvas id="gaugeChart2" style="width:100%; height:100%;"></canvas>
                         </div>
                     </div>
                 </div>
@@ -377,6 +377,66 @@
                             }]
                         });
                     });
+
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var casados = {{casadosUnicos|safe}}; // Datos dinámicos
+                        var solteros = {{solterosUnicos|safe}};
+                        var total = casados + solteros;
+                    
+                        var ctx2 = document.getElementById('gaugeChart2').getContext('2d');
+                        
+                        var gaugeChart2 = new Chart(ctx2, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Casados', 'Solteros'],
+                                datasets: [{
+                                    data: [casados, solteros],
+                                    backgroundColor: ['#0094f7', '#ff0000'], // Azul para casados, rojo para solteros
+                                    borderWidth: 0
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                rotation: 270, // Comienza desde abajo
+                                circumference: 180, // Muestra solo la mitad superior del gráfico
+                                cutout: '70%', // Grosor del anillo
+                                plugins: {
+                                    legend: {
+                                        display: false // Oculta la leyenda
+                                    },
+                                    tooltip: {
+                                        enabled: true // Habilita los tooltips
+                                    }
+                                },
+                                layout: {
+                                    padding: {
+                                        bottom: 10 // Espacio para que el texto se vea bien
+                                    }
+                                }
+                            },
+                            plugins: [{
+                                // Plugin para mostrar texto en el centro
+                                afterDraw: function (chart) {
+                                    var { width, height, ctx } = chart;
+                                    ctx.restore();
+                                    var fontSize = (height / 114).toFixed(2);
+                                    ctx.font = `${fontSize}em sans-serif`;
+                                    ctx.textBaseline = "middle";
+                                    ctx.fillStyle = "#666"; // Color del texto
+                    
+                                    var text = total + " Clientes",
+                                        textX = Math.round((width - ctx.measureText(text).width) / 2),
+                                        textY = height / 1.45; // Ajusta para centrar bien el texto
+                    
+                                    ctx.fillText(text, textX, textY);
+                                    ctx.save();
+                                }
+                            }]
+                        });
+                    });
+                    
                 </script>
             </main>
         </div>

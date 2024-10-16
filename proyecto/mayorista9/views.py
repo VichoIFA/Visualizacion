@@ -55,8 +55,9 @@ def Index(request):
     HombresUnicos = tablaUnicos[tablaUnicos["Gender"] == 'M']['User_ID'].count()
     MujeresUnicas = tablaUnicos[tablaUnicos["Gender"] == 'F']['User_ID'].count()
     
-    print(HombresUnicos)
-    print(MujeresUnicas)
+    solterosUnicos = tablaUnicos[tablaUnicos["Marital_Status"] == 0]['User_ID'].count()
+    casadosUnicos = tablaUnicos[tablaUnicos["Marital_Status"] == 1]['User_ID'].count()
+    
     context = {
         'labels1' : Rango_edades,
         'producto1' : Producto1,
@@ -71,7 +72,9 @@ def Index(request):
         'edadMax2' : edadesMax2,
         'edadMax3' : edadesMax3,
         'hombresUnicos' : HombresUnicos,
-        'mujeresUnicas' : MujeresUnicas
+        'mujeresUnicas' : MujeresUnicas,
+        'solterosUnicos' : solterosUnicos,
+        'casadosUnicos' : casadosUnicos
     }
 
     return render(request, 'graficomuestra.html', context)
