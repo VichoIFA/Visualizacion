@@ -16,8 +16,8 @@
             font-weight: bold; 
         }
         .sidebar {
-            height: 830px;
-            width: 190px;
+
+            width: 175px;
             background-color: #ff8a30;
             color: #000000;
             box-shadow:-3px 0 10px 0 #555;
@@ -58,7 +58,7 @@
             align-items: center;
             width: 30%;
             border-radius: 10px;
-            padding: 10px;
+            padding: 5px;
             margin: 0 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -86,15 +86,15 @@
         }
 
         .podium-item:nth-child(1) {
-            height: 80px; 
+            height: 60%; 
         }
     
         .podium-item:nth-child(2) {
-            height: 120px; 
+            height: 100%; 
         }
     
         .podium-item:nth-child(3) {
-            height: 100px; 
+            height: 80%; 
         }
 
         footer {
@@ -163,9 +163,9 @@
     </style>
     </nav>
 
-    <div class="container-fluid" style = "border-bottom: 2px solid #e8e8e8; border-right:  2px solid #e8e8e8;">
+    <div class="container-fluid" style = "border-bottom: 2px solid #e8e8e8; border-right 2px solid #e8e8e8;">
         <div class="row">
-            <nav class="col-md-3 col-lg-2 sidebar d-none d-md-block" style = "padding-left:5px;">
+            <nav class="col-md-2 col-lg-2 sidebar d-none d-md-block" style = "padding-left:5px;">
                 <div class="position-sticky">
                     <h5 class="p-3">Menú</h5>
                     <ul class="nav flex-column">
@@ -184,14 +184,14 @@
                     </ul>
                 </div>
             </nav>
+            
+            <main class="col-md-9 mx-sm-auto mx-md-auto mx-lg-auto px-lg-0 px-md-0 px-sm-0" >
 
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="padding-top: 400px ;">
-
-                <div class="container" style="position: absolute; top: 100px; width: 1125px;">
+                <div class="container" style="top: 100px; width: 100%">
                     <!-- Fila superior (nuevas tres cartas) -->
                     <div class="row mb-4">
                         <div class="col-md-4">
-                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 150px; overflow: hidden;">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                                 <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">cantidad de compras registradas</h5>
                                 </div>
@@ -201,7 +201,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 150px; overflow: hidden;">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                                 <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">Gasto promedio de compra</h5>
                                 </div>
@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 150px; overflow: hidden;">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                                 <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">Cantidad de productos vendidos</h5>
                                 </div>
@@ -225,7 +225,7 @@
                     <!-- Fila inferior (cartas originales) -->
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px   ; overflow: hidden;">
                                 <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px; ">
                                     <h5 class="card-title mb-0">Cantidad de clientes por género</h5>
                                 </div>
@@ -235,28 +235,28 @@
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                                 <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">Compras (millones) en edades que más compran</h5>
                                 </div>
 
                                 <div class="card-body p-4 bg-light d-flex align-items-end justify-content-center">
-                                    <div class="podium">
+                                    <div class="podium" style="height:100%">
                                         <div class="podium-item" style="background-color: #9c4600; color: white; position: relative;"> <!-- Cambia el color aquí -->
-                                            <span class="position">3</span>
-                                            <span class="value">{{suma3}}</span>
+                                            <span class="position" style ="font-size: 15px">3</span>
+                                            <span class="value" style ="font-size: 18px">{{suma3}}</span>
                                             <span class="text-over-bar">{{edadMax3}}</span>
                                         </div>
                                         <!-- Primer lugar -->
                                         <div class="podium-item" style="background-color: #d6d01a; color: white; position: relative;"> <!-- Cambia el color aquí -->
-                                            <span class="position">1</span>
-                                            <span class="value">{{suma1}}</span>
+                                            <span class="position" style ="font-size: 15px">1</span>
+                                            <span class="value" style ="font-size: 18px">{{suma1}}</span>
                                             <span class="text-over-bar">{{edadMax1}}</span>
                                         </div>
                                         <!-- Segundo lugar -->
                                         <div class="podium-item" style="background-color: #7d7d7d; color: white; position: relative;"> <!-- Cambia el color aquí -->
-                                            <span class="position">2</span>
-                                            <span class="value">{{suma2}}</span>
+                                            <span class="position" style ="font-size: 15px">2</span>
+                                            <span class="value" style ="font-size: 18px">{{suma2}}</span>
                                             <span class="text-over-bar">{{edadMax2}}</span>
                                         </div>
                                     </div>
@@ -276,10 +276,10 @@
                     </div>
                 </div>
                 
-                <div class="row" style="padding-top: 60px">
-                    <div class="d-flex justify-content-between align-items-start position-relative" style="padding-left: 24px;">
+                <div class="row" style="padding-top: 30px">
+                    <div class="col-lg-6" style="padding-bottom:30px">
                         <!-- Primer gráfico --> 
-                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 45%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
                             <div class="card-header text-white" style="background-color: #0f00b5;">
                                 <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
                             </div>
@@ -287,9 +287,11 @@
                                 <canvas id="mainChart" style="width: 100%; height: auto;"></canvas>
                             </div>
                         </div>
-                
+                    </div>
+
+                    <div class="col-lg-6" style="padding-bottom:30px">
                         <!-- Segundo gráfico -->
-                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 45%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; "> <!-- Cambia la altura aquí -->
                             <div class="card-header text-white" style="background-color: #0f00b5;">
                                 <h5 class="card-title mb-0">Compras de solteros según categoría de ciudad</h5>
                             </div>
@@ -377,7 +379,7 @@
                                 maintainAspectRatio: false,
                                 plugins: {
                                     legend: {
-                                        display: false // Oculta la leyenda
+                                        display: false 
                                     }
                                 },
                                 scales: {
@@ -400,7 +402,7 @@
                     });
 
                     document.addEventListener("DOMContentLoaded", function () {
-                        var hombres = {{hombresUnicos|safe}}; // Datos dinámicos
+                        var hombres = {{hombresUnicos|safe}}; 
                         var mujeres = {{mujeresUnicas|safe}};
                         var total = hombres + mujeres;
 
@@ -412,43 +414,43 @@
                                 labels: ['Hombres', 'Mujeres'],
                                 datasets: [{
                                     data: [hombres, mujeres],
-                                    backgroundColor: ['#0094f7', '#ff0000'], // Azul para hombres, rojo para mujeres
+                                    backgroundColor: ['#0094f7', '#ff0000'], 
                                     borderWidth: 0
                                 }]
                             },
                             options: {
                                 responsive: true,
                                 maintainAspectRatio: false,
-                                rotation: 270, // Comienza desde abajo
-                                circumference: 180, // Muestra solo la mitad superior del gráfico
-                                cutout: '70%', // Grosor del anillo
+                                rotation: 270, 
+                                circumference: 180, 
+                                cutout: '70%', 
                                 plugins: {
                                     legend: {
-                                        display: false // Oculta la leyenda
+                                        display: false 
                                     },
                                     tooltip: {
-                                        enabled: true // Oculta los tooltips
+                                        enabled: true
                                     }
                                 },
                                 layout: {
                                     padding: {
-                                        bottom: 10 // Espacio para que el texto se vea bien
+                                        bottom: 10 
                                     }
                                 }
                             },
                             plugins: [{
-                                // Plugin para mostrar texto en el centro
+                                
                                 afterDraw: function (chart) {
                                     var { width, height, ctx } = chart;
                                     ctx.restore();
                                     var fontSize = (height / 114).toFixed(2);
                                     ctx.font = `${fontSize}em sans-serif`;
                                     ctx.textBaseline = "middle";
-                                    ctx.fillStyle = "#666"; // Color del texto
+                                    ctx.fillStyle = "#666"; 
 
                                     var text = total + " Clientes",
                                         textX = Math.round((width - ctx.measureText(text).width) / 2),
-                                        textY = height / 1.45; // Ajusta para centrar bien el texto
+                                        textY = height / 1.45;
 
                                     ctx.fillText(text, textX, textY);
                                     ctx.save();
@@ -459,7 +461,7 @@
 
 
                     document.addEventListener("DOMContentLoaded", function () {
-                        var casados = {{casadosUnicos|safe}}; // Datos dinámicos
+                        var casados = {{casadosUnicos|safe}}; 
                         var solteros = {{solterosUnicos|safe}};
                         var total = casados + solteros;
                     
@@ -471,43 +473,43 @@
                                 labels: ['Casados', 'Solteros'],
                                 datasets: [{
                                     data: [casados, solteros],
-                                    backgroundColor: ['#e300eb', '#fff700'], // Azul para casados, rojo para solteros
+                                    backgroundColor: ['#e300eb', '#fff700'],
                                     borderWidth: 0
                                 }]
                             },
                             options: {
                                 responsive: true,
                                 maintainAspectRatio: false,
-                                rotation: 270, // Comienza desde abajo
-                                circumference: 180, // Muestra solo la mitad superior del gráfico
-                                cutout: '70%', // Grosor del anillo
+                                rotation: 270, 
+                                circumference: 180, 
+                                cutout: '70%', 
                                 plugins: {
                                     legend: {
-                                        display: false // Oculta la leyenda
+                                        display: false 
                                     },
                                     tooltip: {
-                                        enabled: true // Habilita los tooltips
+                                        enabled: true 
                                     }
                                 },
                                 layout: {
                                     padding: {
-                                        bottom: 10 // Espacio para que el texto se vea bien
+                                        bottom: 10 
                                     }
                                 }
                             },
                             plugins: [{
-                                // Plugin para mostrar texto en el centro
+                                
                                 afterDraw: function (chart) {
                                     var { width, height, ctx } = chart;
                                     ctx.restore();
                                     var fontSize = (height / 114).toFixed(2);
                                     ctx.font = `${fontSize}em sans-serif`;
                                     ctx.textBaseline = "middle";
-                                    ctx.fillStyle = "#666"; // Color del texto
+                                    ctx.fillStyle = "#666"; 
                     
                                     var text = total + " Clientes",
                                         textX = Math.round((width - ctx.measureText(text).width) / 2),
-                                        textY = height / 1.45; // Ajusta para centrar bien el texto
+                                        textY = height / 1.45; 
                     
                                     ctx.fillText(text, textX, textY);
                                     ctx.save();
