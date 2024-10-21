@@ -72,7 +72,7 @@
             transform: translateX(-50%);
             font-weight: bold; 
             color: black; 
-            font-size: 13px;
+            font-size: 12px;
         }
         .podium-item .position {
             font-size: 20px;
@@ -131,17 +131,44 @@
         footer a:hover {
             text-decoration: underline; /* Subrayado al pasar el ratón */
         }
+
+        .clickable-text {
+            cursor: pointer;
+        }
+        @media (max-width: 767.98px) {
+            .sidebar {
+                display: none;
+            }
+        }
+
+        #sidebarMenu {
+            transition: top 0.3s; /* Agrega una transición para un efecto suave */
+        }
+
+        #sidebarMenu.full-width {
+            position: relative; /* Cambia a relative para que se posicione debajo de la navbar */
+            width: 100%; /* Define el ancho de la sidebar, en este caso, 75% */
+            position: fixed; /* Permite que la sidebar se superponga al contenido */
+            z-index: 1000; /* Asegura que la sidebar esté por encima de otros elementos */
+            left: 0;
+        }
+
+        .fixed-top {
+            position: fixed; /* Ancla la navbar en la parte superior */
+            
+        }
+
     </style>
 </head>
 
 <body>
-    <nav class="navbar custom-navbar"  style = "border-bottom: 5px solid #e8e8e8;">
+    <nav class="navbar custom-navbar" style="border-bottom: 5px solid #e8e8e8;">
         <div class="container-fluid d-flex align-items-center">
             <a class="navbar-brand d-flex align-items-center" href="#">
                 <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="55" class="d-inline-block align-text-top">
                 <h3 class="mb-0 ms-2">Mayorista 9</h3>
             </a>
-
+    
             <div class="d-flex ms-2">
                 <span class="clickable-text ms-3">
                     <h6 class="mb-0">Perfil</h6>
@@ -153,19 +180,19 @@
                     <h6 class="mb-0">Recursos</h6>
                 </span>
             </div>
-
-            <img src="{% static 'images/perfil.png' %}" alt="Descripción de la imagen" width="50" height="50" class="rounded-circle">   
+            
+            <img src="{% static 'images/perfil.png' %}" alt="Descripción de la imagen" width="50" height="50" class="rounded-circle">
+    
+            <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
         </div>
-            <style>
-        .clickable-text {
-            cursor: pointer;
-        }
-    </style>
     </nav>
-
-    <div class="container-fluid" style = "border-bottom: 2px solid #e8e8e8; border-right 2px solid #e8e8e8;">
+    
+    <div class="container-fluid" style="border-bottom: 2px solid #e8e8e8; border-right: 2px solid #e8e8e8;">
         <div class="row">
-            <nav class="col-md-2 col-lg-2 sidebar d-none d-md-block" style = "padding-left:5px;">
+
+            <nav id="sidebarMenu" class="col-md-2 col-lg-2 sidebar collapse d-md-block" style="padding-left:5px;">
                 <div class="position-sticky">
                     <h5 class="p-3">Menú</h5>
                     <ul class="nav flex-column">
@@ -185,6 +212,7 @@
                 </div>
             </nav>
             
+            
             <main class="col-md-9 mx-sm-auto mx-md-auto mx-lg-auto px-lg-0 px-md-0 px-sm-0" >
 
                 <div class="container" style="top: 100px; width: 100%">
@@ -203,7 +231,7 @@
                         <div class="col-md-4">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                                 <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                                    <h5 class="card-title mb-0">Gasto promedio de compra</h5>
+                                    <h5 class="card-title mb-0">Gasto promedio de compra registrados</h5>
                                 </div>
                                 <div class="card-body p-4 bg-light">
                                     <p class="card-text custom-text"">{{cantidadCompraPromedio|safe}}</p>
@@ -302,6 +330,42 @@
                     </div>
                 </div>
                 <script>
+
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const sidebarToggleButton = document.querySelector('.navbar-toggler');
+                        const sidebarMenu = document.getElementById('sidebarMenu');
+                        const mainContent = document.querySelector('main');
+                        const navbar = document.querySelector('.navbar');
+
+                        function adjustSidebarPosition() {
+                            const navbarHeight = navbar.offsetHeight; 
+                            sidebarMenu.style.top = `${navbarHeight}px`; 
+                        }
+                    
+                        adjustSidebarPosition();
+                    
+                        // Ajusta la posición cuando se redimensiona la ventana
+                        window.addEventListener('resize', adjustSidebarPosition);
+                    
+                    
+                        sidebarToggleButton.addEventListener('click', function() {
+                            // Si el sidebar está visible (tiene clase 'show'), lo ocultamos y mostramos el main
+                            if (sidebarMenu.classList.contains('show')) {
+                                sidebarMenu.classList.remove('show', 'full-width');  // Oculta el sidebar y quita la clase 'full-width'
+                                sidebarMenu.style.display = 'none';    // Asegura que el sidebar se oculta
+                                mainContent.style.display = 'block';   // Muestra el contenido principal
+                                navbar.classList.remove('fixed-top');
+                            } 
+                            // Si el sidebar no está visible, lo mostramos y ocultamos el main
+                            else {
+                                sidebarMenu.classList.add('show', 'full-width');     // Muestra el sidebar y agrega la clase 'full-width'
+                                sidebarMenu.style.display = 'block';   // Asegura que el sidebar se muestra
+                                navbar.classList.add('fixed-top'); 
+                            }
+                        });
+                    });
+                    
+
                     document.addEventListener("DOMContentLoaded", function () {
                         const mainChartData1 = {
                             labels: {{ labels1|safe }},
