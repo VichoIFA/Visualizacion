@@ -91,7 +91,23 @@ def Index(request):
         'cantidadCompras' : cantidadCompras
     }
 
-    return render(request, 'graficomuestra.html', context)
-    
+    return render(request, 'DashboardInicial.html', context)
 
-    #return render(request, "grafico1.html")
+def BarrasAgrupadas(request, label, index):
+    
+    columnaSeleccionada = int(index)
+    edadSeleccionada = str(label)
+    TiposProductos = ["Product_Category_1","Product_Category_2","Product_Category_3"]
+    Encabezado = ["producto categoría 1", "producto categoría 2", "producto categoría 3"]
+    Colores = ["#CE2024","#11D6C3","#DEE810"]
+    selectorColor = Colores[columnaSeleccionada]
+    
+    ProductoSeleccionado = TiposProductos[columnaSeleccionada]
+    titulo = Encabezado[columnaSeleccionada]
+    context = {
+        'label' : edadSeleccionada,
+        'index' : ProductoSeleccionado,
+        'header' : titulo,
+        'color' : selectorColor,
+    }
+    return render(request, 'detalleBarrasAgrupadas.html', context)

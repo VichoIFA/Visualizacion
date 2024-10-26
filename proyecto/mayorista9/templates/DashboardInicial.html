@@ -1,0 +1,653 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página principal</title>
+    <script src="{% static 'chart.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+    <style>
+        .custom-navbar {
+            background-color: #f5742a;
+        }
+        .custom-text {
+            font-size: 40px; 
+            font-weight: bold; 
+        }
+        .sidebar {
+            
+            background-color: #ff8a30;
+            box-shadow:-3px 0 10px 0 #555;
+
+        }
+        .sidebar .nav-link {
+            font-size: 18px;
+            color: #000000; 
+            font-weight: bold;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #fc8128; 
+            color: #000000; 
+        }
+        .podium {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+        }
+    
+        .podium-item {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-top;
+            align-items: center;
+            width: 30%;
+            border-radius: 10px;
+            padding: 2px;
+            margin: 0 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            font-size: 5px;
+        }
+
+        .text-over-bar {
+            position: absolute;
+            top: -20px; 
+            left: 50%; 
+            transform: translateX(-50%);
+            font-weight: bold; 
+            color: black; 
+            font-size: 12px;
+        }
+        .podium-item .position {
+            font-weight: bold;
+        }
+    
+        .podium-item .value {
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .podium-item:nth-child(1) {
+            height: 60%; 
+        }
+    
+        .podium-item:nth-child(2) {
+            height: 100%; 
+        }
+    
+        .podium-item:nth-child(3) {
+            height: 80%; 
+        }
+        
+        footer {
+            background-color: #040a4a;
+            color: white; 
+            text-align: center; 
+            padding: 1px;
+            min-height: 30px; 
+            font-size: 0.8em; 
+            position: relative; 
+            bottom: 0; 
+            width: 100%;
+        }
+        
+        footer p {
+            margin: 5px 0; 
+        }
+        
+        footer nav ul {
+            list-style-type: none; 
+            padding: 0;
+        }
+        
+        footer nav ul li {
+            display: inline; 
+            margin: 0 15px; 
+        }
+        
+        footer a {
+            color: white;
+            text-decoration: none; 
+        }
+        
+        footer a:hover {
+            text-decoration: underline; 
+        }
+
+        .clickable-text {
+            cursor: pointer;
+        }
+        @media (max-width: 767.98px) {
+            .sidebar {
+                display: none;
+            }
+        }
+
+        #sidebarMenu {
+            transition: top 0.3s; 
+        }
+
+        #sidebarMenu.full-width {
+            position: relative; 
+            width: 100%; 
+            position: fixed; 
+            z-index: 1000; 
+            left: 0;
+        }
+
+        .fixed-top {
+            position: fixed; 
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8); /* Inicia más pequeño */
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1); /* Escala a su tamaño normal */
+            }
+        }
+
+        @keyframes fadeOutScale {
+            0% {
+                opacity: 1;
+                transform: scale(1); /* Tamaño normal */
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8); /* Se encoge al cerrar */
+            }
+        }
+
+        dialog {
+            border: none;
+            padding: 0;
+            border-radius: 15px;
+            max-width: 80%;
+            width: auto;
+            height: auto;
+            outline: none;
+            z-index: 1000; /* Asegura que el modal esté encima del contenido */
+            position: fixed; /* Fija el modal sobre el contenido */
+            background-color: white;
+            resize: both; /* Permite redimensionar en ambas direcciones */
+            overflow: auto; /* Agrega scroll en caso de que el contenido sea mayor al tamaño */
+            animation: fadeInScale 0.3s ease; /* Aplica la animación */
+        }
+
+        .dialog-close {
+            animation: fadeOutScale 0.3s ease forwards; /* Aplica la animación de salida */
+        }
+        
+        dialog::backdrop{
+            opacity: 0.3;
+            pointer-events: none;
+            resize: both; /* Permite redimensionar en ambas direcciones */
+        }
+    </style>
+</head>
+
+<body class = "d-flex-flex-column min-vh-100" style = "height: 100%;"> 
+    <nav class="navbar custom-navbar" style="border-bottom: 5px solid #e8e8e8;">
+        <div class="container-fluid d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="55" class="d-inline-block align-text-top">
+                <h3 class="mb-0 ms-2">Mayorista 9</h3>
+            </a>
+    
+            <div class="d-flex ms-2">
+                <span class="clickable-text ms-3">
+                    <h6 class="mb-0">Perfil</h6>
+                </span>
+                <span class="clickable-text ms-3">
+                    <h6 class="mb-0">Configuración</h6>
+                </span>
+                <span class="clickable-text ms-3">
+                    <h6 class="mb-0">Recursos</h6>
+                </span>
+            </div>
+            
+            <img src="{% static 'images/perfil.png' %}" alt="Descripción de la imagen" width="50" height="50" class="rounded-circle">
+    
+            <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <div class="container-fluid" style="border-bottom: 2px solid #e8e8e8; border-right: 2px solid #e8e8e8;">
+        <div class="row" style = "background-color: #e8e8e8">
+
+            <nav id="sidebarMenu" class="col-md-2 col-lg-2 sidebar collapse d-md-block" style="padding-left:5px;">
+                <div class="position-sticky">
+                    <h5 class="p-3" style ="font-weight:bold">Menú</h5>
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#">Inicio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard 1</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard 2</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Dashboard 3</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            
+            
+            <main class="col-md-9 mx-sm-auto mx-md-auto mx-lg-auto px-lg-0 px-md-0 px-sm-0">
+
+                <dialog id="PopUp"></dialog>
+
+                <div class="container" style="top: 100px; width: 100%">
+                    <div class="row mb-4" style = "margin-top: 15px">
+                        <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">cantidad de compras registradas</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadCompras|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Gasto promedio de compra registrados</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadCompraPromedio|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Cantidad de productos vendidos</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadTotal|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+                    <div class="row mb-2">
+                        <div class="col-md-12 col-lg-4 col-xl-4 mb-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px   ; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px; ">
+                                    <h5 class="card-title mb-0">Cantidad de clientes por género</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
+                                    <canvas id="gaugeChart" style="width:100%; height:100%;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Compras (millones) en edades que más compran</h5>
+                                </div>
+
+                                <div class="card-body p-4 bg-light d-flex align-items-end justify-content-center">
+                                    <div class="podium" style="height:100%">
+                                        <div class="podium-item" style="background-color: #9c4600; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                            <span class="position" style ="font-size: 15px">3</span>
+                                            <span class="value" style ="font-size: 13px">{{suma3}}</span>
+                                            <span class="text-over-bar">{{edadMax3}}</span>
+                                        </div>
+                                        <div class="podium-item" style="background-color: #d6d01a; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                            <span class="position" style ="font-size: 15px">1</span>
+                                            <span class="value" style ="font-size: 13px">{{suma1}}</span>
+                                            <span class="text-over-bar">{{edadMax1}}</span>
+                                        </div>
+                                        <div class="podium-item" style="background-color: #7d7d7d; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                            <span class="position" style ="font-size: 15px">2</span>
+                                            <span class="value" style ="font-size: 13px">{{suma2}}</span>
+                                            <span class="text-over-bar">{{edadMax2}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Cantidad de clientes según estado civil</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
+                                    <canvas id="gaugeChart2" style="width:100%; height:100%;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row" style="padding-top: 30px">
+                    <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
+                            <div class="card-header text-white" style="background-color: #0f00b5;">
+                                <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                            </div>
+                            <div class="card-body p-4 bg-light">
+                                <canvas id="mainChart" style="width: 100%; height: auto;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; "> <!-- Cambia la altura aquí -->
+                            <div class="card-header text-white" style="background-color: #0f00b5;">
+                                <h5 class="card-title mb-0">Compras de solteros según categoría de ciudad</h5>
+                            </div>
+                            <div class="card-body p-4 bg-light">
+                                <canvas id="mainChart2" style="width: 100%; height: auto;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <script>
+                    
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const sidebarToggleButton = document.querySelector('.navbar-toggler');
+                        const sidebarMenu = document.getElementById('sidebarMenu');
+                        const mainContent = document.querySelector('main');
+                        const navbar = document.querySelector('.navbar');
+
+                        function adjustSidebarPosition() {
+                            const navbarHeight = navbar.offsetHeight; 
+                            sidebarMenu.style.top = `${navbarHeight}px`; 
+                        }
+                        adjustSidebarPosition();
+                        window.addEventListener('resize', adjustSidebarPosition);
+                        sidebarToggleButton.addEventListener('click', function() {
+
+                            if (sidebarMenu.classList.contains('show')) {
+                                sidebarMenu.classList.remove('show', 'full-width');  
+                                sidebarMenu.style.display = 'none';    
+                                mainContent.style.display = 'block';   
+                                navbar.classList.remove('fixed-top');
+                            } 
+
+                            else {
+                                sidebarMenu.classList.add('show', 'full-width');     
+                                sidebarMenu.style.display = 'block';   
+                                navbar.classList.add('fixed-top'); 
+                            }
+                        });
+                    });
+                    
+                    function closeModal() {
+                        var dialog = document.getElementById('PopUp');
+                        dialog.classList.add('dialog-close'); // Añade la clase de cierre
+                    
+                        // Espera el tiempo de la animación antes de cerrar el modal
+                        setTimeout(() => {
+                            dialog.close(); // Cierra el diálogo
+                            dialog.classList.remove('dialog-close'); // Remueve la clase para que esté lista para la próxima vez
+                        }, 300); // Coincide con la duración de la animación
+                    }
+                    
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const mainChartData1 = {
+                            labels: {{ labels1|safe }},
+                            datasets: [
+                                {
+                                    label: 'Producto 1',
+                                    data: {{ producto1|safe }},
+                                    backgroundColor: '#CE2024',
+                                    borderColor: '#CE2024',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Producto 2',
+                                    data: {{ producto2|safe }},
+                                    backgroundColor: '#11D6C3',
+                                    borderColor: '#11D6C3',
+                                    borderWidth: 1
+                                },
+                                {
+                                    label: 'Producto 3',
+                                    data: {{ producto3|safe }},
+                                    backgroundColor: '#DEE810',
+                                    borderColor: '#DEE810',
+                                    borderWidth: 1
+                                }
+                            ]
+                        };
+                    
+                        var mainChartCtx1 = document.getElementById('mainChart').getContext('2d');
+                        var mainChart1 = new Chart(mainChartCtx1, {
+                            type: 'bar',
+                            data: mainChartData1,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Rango de Edad'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Compras (en millones)'
+                                        },
+                                        beginAtZero: true
+                                    }
+                                },
+                                onClick: async (event, elements) => {
+                                    if (elements.length > 0) {
+
+                                        var index = elements[0].index; //encuentra el index del grupo de columnas cliqueado
+                                        var label = mainChartData1.labels[index]; //encuentra el valor del grupo
+                                        index = elements[0].datasetIndex; //encuentra que columan especifica fue cliqueada dentro del grupo, solo es necesario en barras agrupadas
+                    
+                                        // Cargar el contenido del modal desde otro archivo HTML
+                                        try {
+                                            link = `/detalleBarrasAgrupadas/${label}/${index}`
+                                            const response = await fetch(link);
+                                            const modalContent = await response.text();
+                                            var dialog = document.getElementById('PopUp');
+                                            dialog.innerHTML = modalContent;
+                                            dialog.show();
+                                            
+                                            var closeModalBtn = dialog.querySelector('#btn-cerrar-modal');
+                                            closeModalBtn.addEventListener('click', function () {
+                                                closeModal();
+                                            });
+                                        } catch (error) {
+                                            console.error("Error al cargar el modal:", error);
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                    });
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        const mainChartData2 = {
+                            labels: {{ labels2|safe }},
+                            datasets: [
+                                {
+                                    label: 'Solteros',
+                                    data: {{ solteros|safe }},
+                                    backgroundColor: ["#e36200", "#34de00", "#b500de"],
+                                    borderColor: ["#e36200", "#34de00", "#b39200"],
+                                    borderWidth: 1
+                                }
+                            ]
+                        };
+
+                        var mainChartCtx2 = document.getElementById('mainChart2').getContext('2d');
+                        var mainChart2 = new Chart(mainChartCtx2, {
+                            type: 'bar',
+                            data: mainChartData2,
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        display: false 
+                                    }
+                                },
+                                scales: {
+                                    x: {
+                                        title: {
+                                            display: true,
+                                            text: 'Categoría de ciudad'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Compras de Solteros'
+                                        },
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    });
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var hombres = {{hombresUnicos|safe}}; 
+                        var mujeres = {{mujeresUnicas|safe}};
+                        var total = hombres + mujeres;
+
+                        var ctx = document.getElementById('gaugeChart').getContext('2d');
+                        
+                        var gaugeChart = new Chart(ctx, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Hombres', 'Mujeres'],
+                                datasets: [{
+                                    data: [hombres, mujeres],
+                                    backgroundColor: ['#0094f7', '#ff0000'], 
+                                    borderWidth: 0
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                rotation: 270, 
+                                circumference: 180, 
+                                cutout: '70%', 
+                                plugins: {
+                                    legend: {
+                                        display: false 
+                                    },
+                                    tooltip: {
+                                        enabled: true
+                                    }
+                                },
+                                layout: {
+                                    padding: {
+                                        bottom: 10 
+                                    }
+                                }
+                            },
+                            plugins: [{
+                                
+                                afterDraw: function (chart) {
+                                    var { width, height, ctx } = chart;
+                                    ctx.restore();
+                                    var fontSize = (height / 130).toFixed(2);
+                                    ctx.font = `${fontSize}em sans-serif`;
+                                    ctx.textBaseline = "middle";
+                                    ctx.fillStyle = "#000000"; 
+
+                                    var text = total + " Clientes",
+                                        textX = Math.round((width - ctx.measureText(text).width) / 2),
+                                        textY = height / 1.45;
+
+                                    ctx.fillText(text, textX, textY);
+                                    ctx.save();
+                                }
+                            }]
+                        });
+                    });
+
+
+                    document.addEventListener("DOMContentLoaded", function () {
+                        var casados = {{casadosUnicos|safe}}; 
+                        var solteros = {{solterosUnicos|safe}};
+                        var total = casados + solteros;
+                    
+                        var ctx2 = document.getElementById('gaugeChart2').getContext('2d');
+                        
+                        var gaugeChart2 = new Chart(ctx2, {
+                            type: 'doughnut',
+                            data: {
+                                labels: ['Casados', 'Solteros'],
+                                datasets: [{
+                                    data: [casados, solteros],
+                                    backgroundColor: ['#e300eb', '#fff700'],
+                                    borderWidth: 0
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                rotation: 270, 
+                                circumference: 180, 
+                                cutout: '70%', 
+                                plugins: {
+                                    legend: {
+                                        display: false 
+                                    },
+                                    tooltip: {
+                                        enabled: true 
+                                    }
+                                },
+                                layout: {
+                                    padding: {
+                                        bottom: 10 
+                                    }
+                                }
+                            },
+                            plugins: [{
+                                
+                                afterDraw: function (chart) {
+                                    var { width, height, ctx } = chart;
+                                    ctx.restore();
+                                    var fontSize = (height / 130).toFixed(2);
+                                    ctx.font = `${fontSize}em sans-serif`;
+                                    ctx.textBaseline = "middle";
+                                    ctx.fillStyle = "#000000"; 
+                    
+                                    var text = total + " Clientes",
+                                        textX = Math.round((width - ctx.measureText(text).width) / 2),
+                                        textY = height / 1.45; 
+                    
+                                    ctx.fillText(text, textX, textY);
+                                    ctx.save();
+                                }
+                            }]
+                        });
+                    });
+                    
+                </script>
+            </main>
+        </div>
+    </div>
+</body>
+
+<footer class = "mt-auto">
+    <p>&copy; 2024 Mayorista9. Todos los derechos reservados.</p>
+    <p>Contáctanos: DinoTrayStudio@gmail.com</a></p>
+    </nav>
+</footer>

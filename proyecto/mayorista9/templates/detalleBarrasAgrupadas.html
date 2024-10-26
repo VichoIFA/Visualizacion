@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle Edad</title>
+    <script src="{% static 'chart.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+    <style>
+        #btn-cerrar-modal {
+            position: absolute;
+            top: 10px; /* Ajusta la distancia desde la parte superior */
+            right: 10px; /* Ajusta la distancia desde el lado derecho */
+            background: none; /* Sin fondo */
+            border: none; /* Sin borde */
+            font-size: 12px; /* Tamaño de la letra */
+            cursor: pointer; /* Cambia el cursor al pasar el mouse */
+            dialog.backdrop: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" id= "barra" style = "background-color: {{color|safe}}">
+        <div class="container-fluid" style = "justify-content: center">
+            <h2 style="text-align: center; margin-right: 20px; padding-top: 10px;">
+                Datos del {{header|safe}} entre {{label|safe}} años
+            </h2>
+        </div>
+    </nav>
+    <div class="col-md-4 mb-3 mb-sm-2">
+        <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden; margin-left: 30px; margin-top: 30px;">
+            <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                <h5 class="card-title mb-0">categoria de producto</h5>
+            </div>
+            <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
+                <p class="card-text">{{index|safe}}</p>
+            </div>
+        </div>
+
+        <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden; margin-left: 30px; margin-top: 30px;">
+            <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                <h5 class="card-title mb-0">Rango de edad</h5>
+            </div>
+            <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
+                <p class="card-text">{{label|safe}}</p>
+            </div>
+    </div>
+    <button id="btn-cerrar-modal" style="font-weight:bold">X</button>
+</body>
+</html>
