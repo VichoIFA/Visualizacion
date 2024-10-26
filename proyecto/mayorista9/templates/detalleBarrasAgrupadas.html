@@ -29,24 +29,50 @@
             </h2>
         </div>
     </nav>
-    <div class="col-md-4 mb-3 mb-sm-2">
-        <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden; margin-left: 30px; margin-top: 30px;">
-            <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                <h5 class="card-title mb-0">categoria de producto</h5>
+
+    <div class="container" style="top: 100px; width: 100%">
+        <div class="row mb-4" style = "margin-top: 15px">
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+                <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <h5 class="card-title mb-0">Cantidad de clientes</h5>
+                    </div>
+                    <div class="card-body p-4 bg-light">
+                        <p class="card-text custom-text"">{{cantidadClientes|safe}}</p>
+                    </div>
+                </div>
             </div>
-            <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
-                <p class="card-text">{{index|safe}}</p>
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+                <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <h5 class="card-title mb-0">Cantidad promedio de productos comprados (aproximada)</h5>
+                    </div>
+                    <div class="card-body p-4 bg-light">
+                        <p class="card-text custom-text"">{{cantidadPromedioCompra|safe}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+                <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <h5 class="card-title mb-0">Cantidad de registros de compras</h5>
+                    </div>
+                    <div class="card-body p-4 bg-light">
+                        <p class="card-text custom-text"">{{registrosCompra|safe}}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+                <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                        <h5 class="card-title mb-0">Gasto promedio de compra</h5>
+                    </div>
+                    <div class="card-body p-4 bg-light">
+                        <p class="card-text custom-text"">{{gastoPromedio|safe}}</p>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden; margin-left: 30px; margin-top: 30px;">
-            <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                <h5 class="card-title mb-0">Rango de edad</h5>
-            </div>
-            <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
-                <p class="card-text">{{label|safe}}</p>
-            </div>
-    </div>
     <button id="btn-cerrar-modal" style="font-weight:bold">X</button>
 </body>
 </html>

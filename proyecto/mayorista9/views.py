@@ -101,13 +101,104 @@ def BarrasAgrupadas(request, label, index):
     Encabezado = ["producto categoría 1", "producto categoría 2", "producto categoría 3"]
     Colores = ["#CE2024","#11D6C3","#DEE810"]
     selectorColor = Colores[columnaSeleccionada]
-    
     ProductoSeleccionado = TiposProductos[columnaSeleccionada]
     titulo = Encabezado[columnaSeleccionada]
+    
+    MargenEdad = tabla[tabla["Age"] == edadSeleccionada]
+    
+    if columnaSeleccionada==0:
+        MargenEdad = MargenEdad.drop(columns=["Product_Category_2","Product_Category_3"])
+        MargenEdad = MargenEdad.dropna(subset=[ProductoSeleccionado])
+        
+        tablaUnicos = MargenEdad.drop_duplicates(subset=['User_ID'], keep='first')
+        
+        cantidadClientes = tablaUnicos["User_ID"].count()
+        cantidadPromedioCompra = round(MargenEdad[ProductoSeleccionado].mean())
+        
+        registrosCompra = MargenEdad["User_ID"].count()
+        
+        gastoPromedio = round(MargenEdad["Purchase"].mean(),2)
+        
+        comprasHombres = tablaUnicos[tablaUnicos["Gender"]=="M"][ProductoSeleccionado].sum()
+        comprasMujeres = tablaUnicos[tablaUnicos["Gender"]=="F"][ProductoSeleccionado].sum()
+        listaGeneroUnico = [int(comprasHombres), int(comprasMujeres)]
+        
+        comprasHombres = MargenEdad[MargenEdad["Gender"]=="M"][ProductoSeleccionado].sum()
+        comprasMujeres = MargenEdad[MargenEdad["Gender"]=="F"][ProductoSeleccionado].sum()
+        listaCompraGenero = [comprasHombres, comprasMujeres]
+        
+        
+        cantidadCompraCiudadA = MargenEdad[MargenEdad["City_Category"]=="A"]["City_Category"].count()
+        cantidadCompraCiudadB = MargenEdad[MargenEdad["City_Category"]=="B"]["City_Category"].count()
+        cantidadCompraCiudadC = MargenEdad[MargenEdad["City_Category"]=="C"]["City_Category"].count()
+        listaCompraCiudad = [int(cantidadCompraCiudadA), int(cantidadCompraCiudadB), int(cantidadCompraCiudadC)]
+        #orden = B, A, C
+        
+    if columnaSeleccionada==1:
+        MargenEdad = MargenEdad.drop(columns=["Product_Category_1","Product_Category_3"])
+        MargenEdad = MargenEdad.dropna(subset=[ProductoSeleccionado])
+        
+        tablaUnicos = MargenEdad.drop_duplicates(subset=['User_ID'], keep='first')
+        
+        cantidadClientes = tablaUnicos["User_ID"].count()
+        cantidadPromedioCompra = round(MargenEdad[ProductoSeleccionado].mean())
+        
+        registrosCompra = MargenEdad["User_ID"].count()
+        
+        gastoPromedio = round(MargenEdad["Purchase"].mean(),2)
+        
+        comprasHombres = tablaUnicos[tablaUnicos["Gender"]=="M"][ProductoSeleccionado].sum()
+        comprasMujeres = tablaUnicos[tablaUnicos["Gender"]=="F"][ProductoSeleccionado].sum()
+        listaGeneroUnico = [int(comprasHombres), int(comprasMujeres)]
+        
+        comprasHombres = MargenEdad[MargenEdad["Gender"]=="M"][ProductoSeleccionado].sum()
+        comprasMujeres = MargenEdad[MargenEdad["Gender"]=="F"][ProductoSeleccionado].sum()
+        listaCompraGenero = [int(comprasHombres), int(comprasMujeres)]
+        
+        cantidadCompraCiudadA = MargenEdad[MargenEdad["City_Category"]=="A"]["City_Category"].count()
+        cantidadCompraCiudadB = MargenEdad[MargenEdad["City_Category"]=="B"]["City_Category"].count()
+        cantidadCompraCiudadC = MargenEdad[MargenEdad["City_Category"]=="C"]["City_Category"].count()
+        listaCompraCiudad = [int(cantidadCompraCiudadA), int(cantidadCompraCiudadB), int(cantidadCompraCiudadC)]
+        #orden = B, A, C
+
+    if columnaSeleccionada==2:
+        MargenEdad = MargenEdad.drop(columns=["Product_Category_1","Product_Category_2"])
+        MargenEdad = MargenEdad.dropna(subset=[ProductoSeleccionado])
+        
+        tablaUnicos = MargenEdad.drop_duplicates(subset=['User_ID'], keep='first')
+        
+        cantidadClientes = tablaUnicos["User_ID"].count()
+        cantidadPromedioCompra = round(MargenEdad[ProductoSeleccionado].mean())
+        
+        registrosCompra = MargenEdad["User_ID"].count()
+        
+        gastoPromedio = round(MargenEdad["Purchase"].mean(),2)
+        
+        comprasHombres = tablaUnicos[tablaUnicos["Gender"]=="M"][ProductoSeleccionado].sum()
+        comprasMujeres = tablaUnicos[tablaUnicos["Gender"]=="F"][ProductoSeleccionado].sum()
+        listaGeneroUnico = [int(comprasHombres), int(comprasMujeres)]
+        
+        comprasHombres = MargenEdad[MargenEdad["Gender"]=="M"][ProductoSeleccionado].sum()
+        comprasMujeres = MargenEdad[MargenEdad["Gender"]=="F"][ProductoSeleccionado].sum()
+        listaCompraGenero = [comprasHombres, comprasMujeres]
+        
+        cantidadCompraCiudadA = MargenEdad[MargenEdad["City_Category"]=="A"]["City_Category"].count()
+        cantidadCompraCiudadB = MargenEdad[MargenEdad["City_Category"]=="B"]["City_Category"].count()
+        cantidadCompraCiudadC = MargenEdad[MargenEdad["City_Category"]=="C"]["City_Category"].count()
+        listaCompraCiudad = [int(cantidadCompraCiudadA), int(cantidadCompraCiudadB), int(cantidadCompraCiudadC)]
+        #orden = B, A, C
+        
     context = {
         'label' : edadSeleccionada,
         'index' : ProductoSeleccionado,
         'header' : titulo,
         'color' : selectorColor,
+        'cantidadClientes' : cantidadClientes,
+        'cantidadPromedioCompra' : cantidadPromedioCompra,
+        'registrosCompra' : registrosCompra,
+        'gastoPromedio' : gastoPromedio,
+        'listaGeneroUnico' : listaGeneroUnico,
+        'litaCompraGenero' : listaCompraGenero,
+        'listaCompraCiudad' : listaCompraCiudad
     }
     return render(request, 'detalleBarrasAgrupadas.html', context)

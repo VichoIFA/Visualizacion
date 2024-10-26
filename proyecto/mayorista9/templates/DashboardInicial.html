@@ -277,7 +277,7 @@
                             </div>
                         </div>
                     </div>
-                
+                    
                     <div class="row mb-2">
                         <div class="col-md-12 col-lg-4 col-xl-4 mb-3">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px   ; overflow: hidden;">
@@ -386,7 +386,7 @@
                     function closeModal() {
                         var dialog = document.getElementById('PopUp');
                         dialog.classList.add('dialog-close'); // Añade la clase de cierre
-                    
+
                         // Espera el tiempo de la animación antes de cerrar el modal
                         setTimeout(() => {
                             dialog.close(); // Cierra el diálogo
@@ -421,7 +421,7 @@
                                 }
                             ]
                         };
-                    
+
                         var mainChartCtx1 = document.getElementById('mainChart').getContext('2d');
                         var mainChart1 = new Chart(mainChartCtx1, {
                             type: 'bar',
@@ -450,7 +450,7 @@
                                         var index = elements[0].index; //encuentra el index del grupo de columnas cliqueado
                                         var label = mainChartData1.labels[index]; //encuentra el valor del grupo
                                         index = elements[0].datasetIndex; //encuentra que columan especifica fue cliqueada dentro del grupo, solo es necesario en barras agrupadas
-                    
+
                                         // Cargar el contenido del modal desde otro archivo HTML
                                         try {
                                             link = `/detalleBarrasAgrupadas/${label}/${index}`
@@ -522,7 +522,6 @@
                         var hombres = {{hombresUnicos|safe}}; 
                         var mujeres = {{mujeresUnicas|safe}};
                         var total = hombres + mujeres;
-
                         var ctx = document.getElementById('gaugeChart').getContext('2d');
                         
                         var gaugeChart = new Chart(ctx, {
@@ -564,18 +563,15 @@
                                     ctx.font = `${fontSize}em sans-serif`;
                                     ctx.textBaseline = "middle";
                                     ctx.fillStyle = "#000000"; 
-
                                     var text = total + " Clientes",
                                         textX = Math.round((width - ctx.measureText(text).width) / 2),
                                         textY = height / 1.45;
-
                                     ctx.fillText(text, textX, textY);
                                     ctx.save();
                                 }
                             }]
                         });
                     });
-
 
                     document.addEventListener("DOMContentLoaded", function () {
                         var casados = {{casadosUnicos|safe}}; 
