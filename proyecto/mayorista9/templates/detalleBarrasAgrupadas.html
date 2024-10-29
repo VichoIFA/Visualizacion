@@ -8,20 +8,16 @@
     <script src="{% static 'chart.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
     <style>
-        #btn-cerrar-modal {
-            position: absolute;
-            top: 10px; /* Ajusta la distancia desde la parte superior */
-            right: 10px; /* Ajusta la distancia desde el lado derecho */
-            background: none; /* Sin fondo */
-            border: none; /* Sin borde */
-            font-size: 12px; /* Tamaño de la letra */
-            cursor: pointer; /* Cambia el cursor al pasar el mouse */
-            dialog.backdrop: none;
+        .custom-text {
+            font-size: 40px; 
+            font-weight: bold; 
         }
+        
     </style>
 </head>
 
 <body>
+    
     <nav class="navbar" id= "barra" style = "background-color: {{color|safe}}">
         <div class="container-fluid" style = "justify-content: center">
             <h2 style="text-align: center; margin-right: 20px; padding-top: 10px;">
@@ -30,9 +26,9 @@
         </div>
     </nav>
 
-    <div class="container" style="top: 100px; width: 100%">
-        <div class="row mb-4" style = "margin-top: 15px">
-            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+    <div class="container-fluid">
+        <div class="row" style = "margin-top: 15px">
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                     <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <h5 class="card-title mb-0">Cantidad de clientes</h5>
@@ -42,17 +38,17 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                     <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                        <h5 class="card-title mb-0">Cantidad promedio de productos comprados (aproximada)</h5>
+                        <h5 class="card-title mb-0">Promedio productos comprados</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
                         <p class="card-text custom-text"">{{cantidadPromedioCompra|safe}}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                     <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <h5 class="card-title mb-0">Cantidad de registros de compras</h5>
@@ -62,7 +58,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-3 col-xl-3 mb-3 mb-sm-3">
+            <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                     <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <h5 class="card-title mb-0">Gasto promedio de compra</h5>
@@ -73,6 +69,74 @@
                 </div>
             </div>
         </div>
-    <button id="btn-cerrar-modal" style="font-weight:bold">X</button>
+    </div>
+
+    <div class="row" style="padding-top: 30px">
+        <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
+            <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
+                <div class="card-header text-white" style="background-color: #0f00b5;">
+                    <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                </div>
+                <div class="card-body p-4 bg-light">
+                    <canvas id="mainChart3" style="width: 100%; height: auto;"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
+            <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; "> <!-- Cambia la altura aquí -->
+                <div class="card-header text-white" style="background-color: #0f00b5;">
+                    <h5 class="card-title mb-0">Compras de solteros según categoría de ciudad</h5>
+                </div>
+                <div class="card-body p-4 bg-light">
+
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+    <script>
+            const mainChartData3 = {
+                labels: {{ ciudades|safe }},
+                datasets: [
+                    {
+                        label: 'Solteros',
+                        data: {{ listaCompraCiudad|safe }},
+                        backgroundColor: ["#e36200", "#34de00", "#b500de"],
+                        borderColor: ["#e36200", "#34de00", "#b39200"],
+                        borderWidth: 1
+                    }
+                ]
+            };
+            window.onload = function() {
+            var mainChartCtx3 = document.getElementById('mainChart3').getContext('2d');
+            var mainChart3 = new Chart(mainChartCtx3, {
+                type: 'bar',
+                data: mainChartData3,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false 
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Categoría de ciudad'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Compras de Solteros'
+                            },
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+            }
+    </script>
 </html>

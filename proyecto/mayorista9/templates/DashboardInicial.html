@@ -169,18 +169,21 @@
             border: none;
             padding: 0;
             border-radius: 15px;
-            max-width: 80%;
+            max-width: 74%;
+            max-height: 80%;
+            margin-top: -60px;
             width: auto;
             height: auto;
             outline: none;
             z-index: 1000; /* Asegura que el modal esté encima del contenido */
             position: fixed; /* Fija el modal sobre el contenido */
             background-color: white;
-            resize: both; /* Permite redimensionar en ambas direcciones */
+            resize: vertical; /* Permite redimensionar en ambas direcciones */
             overflow: auto; /* Agrega scroll en caso de que el contenido sea mayor al tamaño */
             animation: fadeInScale 0.3s ease; /* Aplica la animación */
         }
 
+        
         .dialog-close {
             animation: fadeOutScale 0.3s ease forwards; /* Aplica la animación de salida */
         }
@@ -190,6 +193,7 @@
             pointer-events: none;
             resize: both; /* Permite redimensionar en ambas direcciones */
         }
+        
     </style>
 </head>
 
@@ -241,8 +245,6 @@
 
             
             <main class="col-md-9 mx-sm-auto mx-md-auto mx-lg-auto px-lg-0 px-md-0 px-sm-0">
-
-                <dialog id="PopUp"></dialog>
 
                 <div class="container" style="top: 100px; width: 100%">
                     <div class="row mb-4" style = "margin-top: 15px">
@@ -444,28 +446,25 @@
                                         beginAtZero: true
                                     }
                                 },
+
                                 onClick: async (event, elements) => {
                                     if (elements.length > 0) {
+                                    var index = elements[0].index;
+                                    var label = mainChartData1.labels[index];
+                                    index = elements[0].datasetIndex;
+                                try {
+                                    const link = `/detalleBarrasAgrupadas/${label}/${index}`;
+                                    // Abre una nueva pestaña con la URL generada
+                                    const width = 500;  // Ancho deseado
+                                    const height = 700; // Alto deseado
+                        
+                                    // Obtener la posición de la ventana
+                                    const left = window.screenX + (window.innerWidth / 2) - (width / 2);
+                                    const top = window.screenY + (window.innerHeight / 2) - (height / 2);
 
-                                        var index = elements[0].index; //encuentra el index del grupo de columnas cliqueado
-                                        var label = mainChartData1.labels[index]; //encuentra el valor del grupo
-                                        index = elements[0].datasetIndex; //encuentra que columan especifica fue cliqueada dentro del grupo, solo es necesario en barras agrupadas
-
-                                        // Cargar el contenido del modal desde otro archivo HTML
-                                        try {
-                                            link = `/detalleBarrasAgrupadas/${label}/${index}`
-                                            const response = await fetch(link);
-                                            const modalContent = await response.text();
-                                            var dialog = document.getElementById('PopUp');
-                                            dialog.innerHTML = modalContent;
-                                            dialog.show();
-                                            
-                                            var closeModalBtn = dialog.querySelector('#btn-cerrar-modal');
-                                            closeModalBtn.addEventListener('click', function () {
-                                                closeModal();
-                                            });
-                                        } catch (error) {
-                                            console.error("Error al cargar el modal:", error);
+                                    window.open(link, '_blank', `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
+                                } catch (error) {
+                                    console.error("Error al abrir la nueva pestaña:", error);
                                         }
                                     }
                                 }
