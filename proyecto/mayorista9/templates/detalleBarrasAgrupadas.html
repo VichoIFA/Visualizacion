@@ -12,7 +12,6 @@
             font-size: 40px; 
             font-weight: bold; 
         }
-        
     </style>
 </head>
 
@@ -41,7 +40,7 @@
             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                     <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                        <h5 class="card-title mb-0">Promedio productos comprados</h5>
+                        <h5 class="card-title mb-0">Promedio de productos comprados</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
                         <p class="card-text custom-text"">{{cantidadPromedioCompra|safe}}</p>
@@ -75,7 +74,7 @@
         <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
             <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
                 <div class="card-header text-white" style="background-color: #0f00b5;">
-                    <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                    <h5 class="card-title mb-0">Compras por rango de edad</h5>
                 </div>
                 <div class="card-body p-4 bg-light">
                     <canvas id="mainChart3" style="width: 100%; height: auto;"></canvas>
@@ -85,10 +84,10 @@
         <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
             <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; "> <!-- Cambia la altura aquí -->
                 <div class="card-header text-white" style="background-color: #0f00b5;">
-                    <h5 class="card-title mb-0">Compras de solteros según categoría de ciudad</h5>
+                    <h5 class="card-title mb-0">Gasto promedio por ocupacion</h5>
                 </div>
                 <div class="card-body p-4 bg-light">
-
+                    <canvas id="mainChart4" style="width: 100%; height: auto;"></canvas>
                 </div>
             </div>
         </div>
@@ -99,7 +98,7 @@
                 labels: {{ ciudades|safe }},
                 datasets: [
                     {
-                        label: 'Solteros',
+                        label: 'Ciudades',
                         data: {{ listaCompraCiudad|safe }},
                         backgroundColor: ["#e36200", "#34de00", "#b500de"],
                         borderColor: ["#e36200", "#34de00", "#b39200"],
@@ -130,7 +129,7 @@
                         y: {
                             title: {
                                 display: true,
-                                text: 'Compras de Solteros'
+                                text: 'Cantidad de compras'
                             },
                             beginAtZero: true
                         }
@@ -138,5 +137,56 @@
                 }
             });
             }
+
+            const xValues = {{ ocupaciones|safe }};
+            const yValues = {{ precioPromedioOcupacion|safe }};
+            
+            const scatterData = xValues.map((x, index) => ({ x: x, y: yValues[index] }));
+
+            const mainChartData4 = {
+                datasets: [
+                    {
+                        data:scatterData,
+                        backgroundColor: ["#db4500"],
+                        borderColor: ["#db4500"],
+                        borderWidth: 1,
+                        pointRadius: {{cantidadOcupacion|safe}}
+                    }
+                ]
+            };
+            
+            var mainChartCtx4 = document.getElementById('mainChart4').getContext('2d');
+            var mainChart4 = new Chart(mainChartCtx4, {
+                type: 'scatter',  // Cambiado a 'scatter'
+                data: mainChartData4,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false 
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Numero de ocupacion'
+                            },
+                            type: 'linear',  // Define una escala lineal para el eje X
+                            position: 'bottom'
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Gasto promedio'
+                            },
+                            beginAtZero: true,
+                            type: 'linear'  // Define una escala lineal para el eje Y
+                        }
+                    }
+                }
+            });
+            
     </script>
 </html>

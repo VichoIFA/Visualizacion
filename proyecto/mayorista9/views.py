@@ -130,8 +130,11 @@ def BarrasAgrupadas(request, label, index):
         
     ocupaciones = MargenEdad["Occupation"].unique().tolist()
     ocupaciones.sort()
-    PrecioPromedioOcupacion = [int((MargenEdad[MargenEdad["Occupation"] == x]["Purchase"]).mean()) for x in ocupaciones]
     
+    cantidadOcupacion = [(float(np.log10((MargenEdad[MargenEdad["Occupation"] == x]["Occupation"]).count()))*1.9) for x in ocupaciones]
+    PrecioPromedioOcupacion = [int((MargenEdad[MargenEdad["Occupation"] == x]["Purchase"]).mean()) for x in ocupaciones]
+
+    print(cantidadOcupacion)
     context = {
         'label' : edadSeleccionada,
         'index' : ProductoSeleccionado,
@@ -144,6 +147,7 @@ def BarrasAgrupadas(request, label, index):
         'ciudades' : ["A","B","C"],
         'listaCompraCiudad' : listaCompraCiudad,
         'ocupaciones' : ocupaciones,
-        'precioPromedioOcupacion' : PrecioPromedioOcupacion
+        'precioPromedioOcupacion' : PrecioPromedioOcupacion,
+        'cantidadOcupacion' : cantidadOcupacion
     }
     return render(request, 'detalleBarrasAgrupadas.html', context)
