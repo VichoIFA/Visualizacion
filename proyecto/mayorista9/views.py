@@ -151,3 +151,7 @@ def BarrasAgrupadas(request, label, index):
         'cantidadOcupacion' : cantidadOcupacion
     }
     return render(request, 'detalleBarrasAgrupadas.html', context)
+
+def Login(request):
+    
+    return render(request, 'Login.html')
