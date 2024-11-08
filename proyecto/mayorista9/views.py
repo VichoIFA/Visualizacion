@@ -153,5 +153,7 @@ def BarrasAgrupadas(request, label, index):
     return render(request, 'detalleBarrasAgrupadas.html', context)
 
 def Login(request):
-    
     return render(request, 'Login.html')
+
+def Homepage(request):
+    return render(request, 'Homepage.html')
