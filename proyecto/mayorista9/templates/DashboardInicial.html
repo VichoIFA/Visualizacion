@@ -7,16 +7,17 @@
     <title>Página principal</title>
     <script src="{% static 'chart.js' %}"></script>
     <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src = "{% static 'bootstrap-5.3.3-dist/js/bootstrap.min.js'}"></script>
     <style>
         .custom-navbar {
-            background-color: #f5742a;
+            background-color: rgb(253, 126, 20);
         }
         .custom-text {
             font-size: 40px; 
             font-weight: bold; 
         }
         .sidebar {
-            
             background-color: #ff8a30;
             box-shadow:-3px 0 10px 0 #555;
 
@@ -58,7 +59,9 @@
             top: -20px; 
             left: 50%; 
             transform: translateX(-50%);
+            text-align: center;
             font-weight: bold; 
+            width: 100%;
             color: black; 
             font-size: 12px;
         }
@@ -84,7 +87,7 @@
         }
         
         footer {
-            background-color: #040a4a;
+            background-color: #000000;
             color: white; 
             text-align: center; 
             padding: 1px;
@@ -121,79 +124,73 @@
         .clickable-text {
             cursor: pointer;
         }
-        @media (max-width: 767.98px) {
-            .sidebar {
-                display: none;
-            }
-        }
 
-        #sidebarMenu {
-            transition: top 0.3s; 
-        }
-
-        #sidebarMenu.full-width {
-            position: relative; 
-            width: 100%; 
-            position: fixed; 
-            z-index: 1000; 
-            left: 0;
-        }
-
-        .fixed-top {
-            position: fixed; 
-        }
-
-        @keyframes fadeInScale {
-            0% {
-                opacity: 0;
-                transform: scale(0.8); /* Inicia más pequeño */
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1); /* Escala a su tamaño normal */
-            }
-        }
-
-        @keyframes fadeOutScale {
-            0% {
-                opacity: 1;
-                transform: scale(1); /* Tamaño normal */
-            }
-            100% {
-                opacity: 0;
-                transform: scale(0.8); /* Se encoge al cerrar */
-            }
-        }
-
-        dialog {
-            border: none;
-            padding: 0;
-            border-radius: 15px;
-            max-width: 74%;
-            max-height: 80%;
-            margin-top: -60px;
-            width: auto;
-            height: auto;
-            outline: none;
-            z-index: 1000; /* Asegura que el modal esté encima del contenido */
-            position: fixed; /* Fija el modal sobre el contenido */
-            background-color: white;
-            resize: vertical; /* Permite redimensionar en ambas direcciones */
-            overflow: auto; /* Agrega scroll en caso de que el contenido sea mayor al tamaño */
-            animation: fadeInScale 0.3s ease; /* Aplica la animación */
-        }
-
-        
-        .dialog-close {
-            animation: fadeOutScale 0.3s ease forwards; /* Aplica la animación de salida */
+        #sideNavDashboard {
+            transition: top 0.3s;
         }
         
-        dialog::backdrop{
-            opacity: 0.3;
-            pointer-events: none;
-            resize: both; /* Permite redimensionar en ambas direcciones */
+        #sideNavDashboard.full-width {
+            position: fixed;
+            width: 100% !important;
+            z-index: 1000;
+            top: 0; 
         }
         
+        @media (max-width: 768px) {
+            #sideNavDashboard {
+                width: 0; 
+                overflow: hidden; 
+                display: none:
+            }
+        }
+        
+
+        .dropdown-toggle { outline: 0; }
+
+        .btn-toggle {
+            padding: .25rem .5rem;
+            font-weight: 600;
+            color: var(--bs-emphasis-color);
+            background-color: transparent;
+        }
+        .btn-toggle:hover,
+        .btn-toggle:focus {
+            color: rgba(var(--bs-emphasis-color-rgb), .85);
+            background-color: #f77b23;
+        }
+        
+        .btn-toggle::before {
+            width: 1.25em;
+            line-height: 0;
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+            transition: transform .35s ease;
+            transform-origin: .5em 50%;
+        }
+        
+        [data-bs-theme="dark"] .btn-toggle::before {
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+        }
+        
+            .btn-toggle[aria-expanded="true"] {
+            color: #151bd1
+        }
+            .btn-toggle[aria-expanded="true"]::before {
+            transform: rotate(90deg);
+        }
+        
+        .btn-toggle-nav a {
+            padding: .1875rem .5rem;
+            margin-top: .125rem;
+            margin-left: 1.25rem;
+        }
+            .btn-toggle-nav a:hover,
+            .btn-toggle-nav a:focus {
+            background-color: #f77b23;
+        }
+        
+        .scrollarea {
+            overflow-y: auto;
+        }
     </style>
 </head>
 
@@ -201,7 +198,7 @@
     <nav class="navbar custom-navbar" style="border-bottom: 5px solid #e8e8e8;">
         <div class="container-fluid d-flex align-items-center">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="55" class="d-inline-block align-text-top">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="70" height="60" class="d-inline-block align-text-top">
                 <h3 class="mb-0 ms-2">Mayorista 9</h3>
             </a>
     
@@ -223,35 +220,141 @@
         </div>
     </nav>
     
-    <div class="container-fluid" style="border-bottom: 2px solid #e8e8e8; border-right: 2px solid #e8e8e8;">
+    <div class="container-fluid" style="border-bottom: 2px solid #1c1b1b; border-right: 2px solid #e8e8e8;">
         <div class="row" style = "background-color: #e8e8e8">
-
-            <nav id="sidebarMenu" class="col-md-2 col-lg-2 sidebar collapse d-md-block" style="padding-left:5px;">
-                <div class="position-sticky">
-                    <h5 class="p-3" style ="font-weight:bold">Menú</h5>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="#">Inicio</a>
+            
+            <div class="flex-shrink-0 p-3" id = "sideNavDashboard" style="width: 180px; height: auto; background-color: #fd7e14;; padding-bottom: 15px; padding-right: 0px;box-shadow:-3px 0 10px 0 #555;">
+                <a href="/" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom" style = "color: black ">
+                    <svg class="bi pe-none me-2" width="32" height="24"><use xlink:href="#House"></use></svg>
+                    <span class="fs-5 fw-semibold" style = "color:black;">Menú</span>
+                </a style = "calor :#1c1b1b">
+                <ul class="list-unstyled ps-0">
+                    
+                <li class="mb-1">
+                    <button type = "button" id = "dashboard-btn" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboardCollapse" aria-expanded="false" aria-controls="dashboardCollapse"  style = "color:black; font-weight: bold;" >
+                        Dashboard
+                    </button>
+                    <div class="collapse" id="dashboardCollapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Idioma</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Configuracion de datos</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <button type="button" id="data-btn" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dataCollapse" aria-expanded="false" aria-controls="dataCollapse" style="color:black; font-weight: bold;">
+                    Estadisticas
+                </button>
+                <div class="collapse" id="dataCollapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse" aria-expanded="false" aria-controls="subDashboardCollapse" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Producto 1 por edad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/0-17/0')">0-17</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/18-25/0')">18-25</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/36-45/0')">36-45</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/46-50/0')">46-50</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/51-55/0')">51-55</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/55+/0')">55+</a></li>
+                                </ul>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Dashboard</a>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse2" aria-expanded="false" aria-controls="subDashboardCollapse2" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Producto 2 por edad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse2">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/0-17/1')">0-17</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/18-25/1')">18-25</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/26-35/1')">26-35</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/36-45/1')">36-45</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/46-50/1')">46-50</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/51-55/1')">51-55</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/55+/1')">55+</a></li>
+                                </ul>
+                            </div>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Configuración</a>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse3" aria-expanded="false" aria-controls="subDashboardCollapse3" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Producto 3 por edad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse3">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/0-17/2')">0-17</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/18-25/2')">18-25</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/26-35/2')">26-35</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/36-45/2')">36-45</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/46-50/2')">46-50</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/51-55/2')">51-55</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/55+/2')">55+</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse4" aria-expanded="false" aria-controls="subDashboardCollapse4" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Productos por ciudad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse4">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/ComprasCiudad/A')">Ciudad categoria A</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/ComprasCiudad/B')">Ciudad categoria B</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/ComprasCiudad/C')">Ciudad categoria C</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse5" aria-expanded="false" aria-controls="subDashboardCollapse5" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Datos por género
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse5">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/genero/Hombres')">Hombres</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/genero/Mujeres')">Mujeres</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse6" aria-expanded="false" aria-controls="subDashboardCollapse6" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Datos por estado civil
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse6">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded  clickable-text" style="color:#606060;"  onclick="openPage('/estadoCivil/Casados')">Casados</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded  clickable-text" style="color:#606060;"  onclick="openPage('/estadoCivil/Solteros')">Solteros</a></li>
+                                </ul>
+                            </div>
                         </li>
                     </ul>
                 </div>
-            </nav>
-
+            </li>
+                <li class="border-top my-3"></li>
+                    <li class="mb-1">
+                    <button type = "button" id = "account-btn" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#accountCollapse" aria-expanded="false" aria-controls="accountCollapse" style = "color:black; font-weight: bold;">
+                        Cuenta
+                    </button>
+                    <div class="collapse" id="accountCollapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Perfil</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Configuraciones</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                    </li>
+                </ul>
+            </div>
             
+
             <main class="col-md-9 mx-sm-auto mx-md-auto mx-lg-auto px-lg-0 px-md-0 px-sm-0">
 
                 <div class="container" style="top: 100px; width: 100%">
                     <div class="row mb-4" style = "margin-top: 15px">
                         <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
-                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                                    <h5 class="card-title mb-0">cantidad de compras registradas</h5>
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Cantidad de compras registradas</h5>
                                 </div>
                                 <div class="card-body p-4 bg-light">
                                     <p class="card-text custom-text"">{{cantidadCompras|safe}}</p>
@@ -260,7 +363,7 @@
                         </div>
                         <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
-                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">Gasto promedio de compra registrados</h5>
                                 </div>
                                 <div class="card-body p-4 bg-light">
@@ -270,7 +373,7 @@
                         </div>
                         <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
-                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">Cantidad de productos vendidos</h5>
                                 </div>
                                 <div class="card-body p-4 bg-light">
@@ -283,7 +386,7 @@
                     <div class="row mb-2">
                         <div class="col-md-12 col-lg-4 col-xl-4 mb-3">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px   ; overflow: hidden;">
-                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px; ">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px; ">
                                     <h5 class="card-title mb-0">Cantidad de clientes por género</h5>
                                 </div>
                                 <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
@@ -293,25 +396,25 @@
                         </div>
                         <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
-                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">Compras (millones) en edades que más compran</h5>
                                 </div>
 
                                 <div class="card-body p-4 bg-light d-flex align-items-end justify-content-center">
                                     <div class="podium" style="height:100%">
-                                        <div class="podium-item" style="background-color: #9c4600; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                        <div class="podium-item" style="background-color: #c47a31; color: white; position: relative;"> 
                                             <span class="position" style ="font-size: 15px">3</span>
-                                            <span class="value" style ="font-size: 13px">{{suma3}}</span>
+                                            <span class="value" style ="font-size: 13px; margin-top:-3px">{{suma3}}</span>
                                             <span class="text-over-bar">{{edadMax3}}</span>
                                         </div>
-                                        <div class="podium-item" style="background-color: #d6d01a; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                        <div class="podium-item" style="background-color: #ffca36; color: white; position: relative;"> 
                                             <span class="position" style ="font-size: 15px">1</span>
-                                            <span class="value" style ="font-size: 13px">{{suma1}}</span>
+                                            <span class="value" style ="font-size: 13px; margin-top:-3px">{{suma1}}</span>
                                             <span class="text-over-bar">{{edadMax1}}</span>
                                         </div>
-                                        <div class="podium-item" style="background-color: #7d7d7d; color: white; position: relative;"> <!-- Cambia el color aquí -->
+                                        <div class="podium-item" style="background-color: #a1a1a1; color: white; position: relative;"> 
                                             <span class="position" style ="font-size: 15px">2</span>
-                                            <span class="value" style ="font-size: 13px">{{suma2}}</span>
+                                            <span class="value" style ="font-size: 13px; margin-top:-3px">{{suma2}}</span>
                                             <span class="text-over-bar">{{edadMax2}}</span>
                                         </div>
                                     </div>
@@ -320,7 +423,7 @@
                         </div>
                         <div class="col-md-12 col-lg-4 col-xl-4 mb-3 mb-sm-3">
                             <div class="card text-center shadow-lg" style="border-radius: 15px; height: 250px; overflow: hidden;">
-                                <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                                     <h5 class="card-title mb-0">Cantidad de clientes según estado civil</h5>
                                 </div>
                                 <div class="card-body p-4 bg-light d-flex align-items-center justify-content-center">
@@ -333,9 +436,9 @@
                 
                 <div class="row" style="padding-top: 30px">
                     <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
-                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
-                            <div class="card-header text-white" style="background-color: #0f00b5;">
-                                <h5 class="card-title mb-0">Compras (en millones) por rango de edad</h5>
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;">
+                            <div class="card-header text-white" style="background-color: #1c1b1b;">
+                                <h5 class="card-title mb-0">Productos vendidos por rango de edad</h5>
                             </div>
                             <div class="card-body p-4 bg-light">
                                 <canvas id="mainChart" style="width: 100%; height: auto;"></canvas>
@@ -343,9 +446,9 @@
                         </div>
                     </div>
                     <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
-                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; "> <!-- Cambia la altura aquí -->
-                            <div class="card-header text-white" style="background-color: #0f00b5;">
-                                <h5 class="card-title mb-0">Compras de solteros según categoría de ciudad</h5>
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; ">
+                            <div class="card-header text-white" style="background-color: #1c1b1b;">
+                                <h5 class="card-title mb-0">Productos vendidos por ciudad</h5>
                             </div>
                             <div class="card-body p-4 bg-light">
                                 <canvas id="mainChart2" style="width: 100%; height: auto;"></canvas>
@@ -358,43 +461,45 @@
                     
                     document.addEventListener('DOMContentLoaded', function() {
                         const sidebarToggleButton = document.querySelector('.navbar-toggler');
-                        const sidebarMenu = document.getElementById('sidebarMenu');
+                        const sidebarMenu = document.getElementById('sideNavDashboard');
                         const mainContent = document.querySelector('main');
                         const navbar = document.querySelector('.navbar');
-
+                        
                         function adjustSidebarPosition() {
-                            const navbarHeight = navbar.offsetHeight; 
-                            sidebarMenu.style.top = `${navbarHeight}px`; 
+                            const navbarHeight = navbar.offsetHeight;
+                            sidebarMenu.style.top = `${navbarHeight}px`;
                         }
+                        
+                        function toggleSidebarVisibility() {
+                            if (window.innerWidth <= 768) {
+                                sidebarMenu.style.display = 'none'; 
+                            } else {
+                                sidebarMenu.style.display = 'block'; 
+                                adjustSidebarPosition(); 
+                            }
+                        }
+                        
                         adjustSidebarPosition();
-                        window.addEventListener('resize', adjustSidebarPosition);
+                        toggleSidebarVisibility();
+                        
+                        window.addEventListener('resize', () => {
+                            toggleSidebarVisibility(); 
+                            adjustSidebarPosition(); 
+                        });
+                        
                         sidebarToggleButton.addEventListener('click', function() {
-
-                            if (sidebarMenu.classList.contains('show')) {
-                                sidebarMenu.classList.remove('show', 'full-width');  
-                                sidebarMenu.style.display = 'none';    
-                                mainContent.style.display = 'block';   
+                            if (sidebarMenu.style.display === 'block' || sidebarMenu.classList.contains('show')) {
+                                sidebarMenu.classList.remove('show', 'full-width');
+                                sidebarMenu.style.display = 'none';
+                                mainContent.style.display = 'block';
                                 navbar.classList.remove('fixed-top');
-                            } 
-
-                            else {
-                                sidebarMenu.classList.add('show', 'full-width');     
-                                sidebarMenu.style.display = 'block';   
-                                navbar.classList.add('fixed-top'); 
+                            } else {
+                                sidebarMenu.classList.add('show', 'full-width');
+                                sidebarMenu.style.display = 'block';
+                                navbar.classList.add('fixed-top');
                             }
                         });
                     });
-                    
-                    function closeModal() {
-                        var dialog = document.getElementById('PopUp');
-                        dialog.classList.add('dialog-close'); // Añade la clase de cierre
-
-                        // Espera el tiempo de la animación antes de cerrar el modal
-                        setTimeout(() => {
-                            dialog.close(); // Cierra el diálogo
-                            dialog.classList.remove('dialog-close'); // Remueve la clase para que esté lista para la próxima vez
-                        }, 300); // Coincide con la duración de la animación
-                    }
                     
                     document.addEventListener("DOMContentLoaded", function () {
                         const mainChartData1 = {
@@ -403,22 +508,22 @@
                                 {
                                     label: 'Producto 1',
                                     data: {{ producto1|safe }},
-                                    backgroundColor: '#CE2024',
-                                    borderColor: '#CE2024',
+                                    backgroundColor: '#590212',
+                                    borderColor: '#590212',
                                     borderWidth: 1
                                 },
                                 {
                                     label: 'Producto 2',
                                     data: {{ producto2|safe }},
-                                    backgroundColor: '#11D6C3',
-                                    borderColor: '#11D6C3',
+                                    backgroundColor: '#a60f48',
+                                    borderColor: '#a60f48',
                                     borderWidth: 1
                                 },
                                 {
                                     label: 'Producto 3',
                                     data: {{ producto3|safe }},
-                                    backgroundColor: '#DEE810',
-                                    borderColor: '#DEE810',
+                                    backgroundColor: '#D97C2B',
+                                    borderColor: '#D97C2B',
                                     borderWidth: 1
                                 }
                             ]
@@ -441,7 +546,7 @@
                                     y: {
                                         title: {
                                             display: true,
-                                            text: 'Compras (en millones)'
+                                            text: 'Compras'
                                         },
                                         beginAtZero: true
                                     }
@@ -449,25 +554,76 @@
 
                                 onClick: async (event, elements) => {
                                     if (elements.length > 0) {
-                                    var index = elements[0].index;
-                                    var label = mainChartData1.labels[index];
-                                    index = elements[0].datasetIndex;
-                                try {
-                                    const link = `/detalleBarrasAgrupadas/${label}/${index}`;
-                                    // Abre una nueva pestaña con la URL generada
-                                    const width = 500;  // Ancho deseado
-                                    const height = 700; // Alto deseado
-                        
-                                    // Obtener la posición de la ventana
-                                    const left = window.screenX + (window.innerWidth / 2) - (width / 2);
-                                    const top = window.screenY + (window.innerHeight / 2) - (height / 2);
+                                        var index = elements[0].index;
+                                        var label = mainChartData1.labels[index];
+                                        index = elements[0].datasetIndex;
+                                
+                                        try {
+                                            const link = `/detalleBarrasAgrupadas/${label}/${index}`;
+                                            const width = 500; 
+                                            const height = 700; 
+                                
+                                            const left = window.screenX + (window.innerWidth / 2) - (width / 2);
+                                            const top = window.screenY + (window.innerHeight / 2) - (height / 2);
+                                
+                                            const nuevaVentana = window.open("", "_blank", `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
+                                
+                                            if (nuevaVentana) {
 
-                                    window.open(link, '_blank', `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
-                                } catch (error) {
-                                    console.error("Error al abrir la nueva pestaña:", error);
+                                                nuevaVentana.document.open();
+                                                nuevaVentana.document.write(`
+                                                    <!DOCTYPE html>
+                                                    <html lang="en">
+                                                    <head>
+                                                        <meta charset="UTF-8">
+                                                        <title>Cargando...</title>
+                                                        <style>
+                                                            body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; }
+                                                            .lds-dual-ring {
+                                                                color: #000;
+                                                            }
+                                                            .lds-dual-ring, .lds-dual-ring:after {
+                                                                box-sizing: border-box;
+                                                            }
+                                                            .lds-dual-ring {
+                                                                display: inline-block;
+                                                                width: 80px;
+                                                                height: 80px;
+                                                            }
+                                                            .lds-dual-ring:after {
+                                                                content: " ";
+                                                                display: block;
+                                                                width: 64px;
+                                                                height: 64px;
+                                                                margin: 8px;
+                                                                border-radius: 50%;
+                                                                border: 6.4px solid currentColor;
+                                                                border-color: currentColor transparent currentColor transparent;
+                                                                animation: lds-dual-ring 1.2s linear infinite;
+                                                            }
+                                                            @keyframes lds-dual-ring {
+                                                                0% { transform: rotate(0deg); }
+                                                                100% { transform: rotate(360deg); }
+                                                            }
+                                                        </style>
+                                                    </head>
+                                                    <body>
+                                                        <div class="lds-dual-ring"></div>
+                                                    </body>
+                                                    </html>
+                                                `);
+                                                nuevaVentana.document.close();
+                                
+                                                nuevaVentana.location.href = link;
+                                            } else {
+                                                console.error("No se pudo abrir la nueva ventana.");
+                                            }
+                                        } catch (error) {
+                                            console.error("Error al abrir la nueva ventana:", error);
                                         }
                                     }
                                 }
+                                
                             }
                         });
                     });
@@ -477,10 +633,10 @@
                             labels: {{ labels2|safe }},
                             datasets: [
                                 {
-                                    label: 'Solteros',
-                                    data: {{ solteros|safe }},
-                                    backgroundColor: ["#e36200", "#34de00", "#b500de"],
-                                    borderColor: ["#e36200", "#34de00", "#b39200"],
+                                    label: 'Productos Por Ciudad',
+                                    data: {{ ProductosPorCiudad|safe }},
+                                    backgroundColor: ["#fce512", "#ed7226", "#ed3e26"],
+                                    borderColor: ["#edd813", "#de6418", "#c93520"],
                                     borderWidth: 1
                                 }
                             ]
@@ -508,11 +664,85 @@
                                     y: {
                                         title: {
                                             display: true,
-                                            text: 'Compras de Solteros'
+                                            text: 'Productos'
                                         },
                                         beginAtZero: true
+                                        
+                                        
+                                    }
+                                },
+                                onClick: async (event, elements) => {
+                                    if (elements.length > 0) {
+                                        var index = elements[0].index;
+                                        var label = mainChartData2.labels[index];
+                                
+                                        try {
+                                            const link = `/ComprasCiudad/${label}`;
+                                            const width = 500; 
+                                            const height = 700; 
+                                
+                                            const left = window.screenX + (window.innerWidth / 2) - (width / 2);
+                                            const top = window.screenY + (window.innerHeight / 2) - (height / 2);
+                                
+                                            const nuevaVentana = window.open("", "_blank", `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
+                                
+                                            if (nuevaVentana) {
+
+                                                nuevaVentana.document.open();
+                                                nuevaVentana.document.write(`
+                                                    <!DOCTYPE html>
+                                                    <html lang="en">
+                                                    <head>
+                                                        <meta charset="UTF-8">
+                                                        <title>Cargando...</title>
+                                                        <style>
+                                                            body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; }
+                                                            .lds-dual-ring {
+                                                                color: #000;
+                                                            }
+                                                            .lds-dual-ring, .lds-dual-ring:after {
+                                                                box-sizing: border-box;
+                                                            }
+                                                            .lds-dual-ring {
+                                                                display: inline-block;
+                                                                width: 80px;
+                                                                height: 80px;
+                                                            }
+                                                            .lds-dual-ring:after {
+                                                                content: " ";
+                                                                display: block;
+                                                                width: 64px;
+                                                                height: 64px;
+                                                                margin: 8px;
+                                                                border-radius: 50%;
+                                                                border: 6.4px solid currentColor;
+                                                                border-color: currentColor transparent currentColor transparent;
+                                                                animation: lds-dual-ring 1.2s linear infinite;
+                                                            }
+                                                            @keyframes lds-dual-ring {
+                                                                0% { transform: rotate(0deg); }
+                                                                100% { transform: rotate(360deg); }
+                                                            }
+                                                        </style>
+                                                    </head>
+                                                    <body>
+                                                        <div class="lds-dual-ring"></div>
+                                                    </body>
+                                                    </html>
+                                                `);
+                                                nuevaVentana.document.close();
+                                
+                                                // Redirigir a la URL de destino cuando esté lista
+                                                nuevaVentana.location.href = link;
+                                            } else {
+                                                console.error("No se pudo abrir la nueva ventana.");
+                                            }
+                                        } catch (error) {
+                                            console.error("Error al abrir la nueva ventana:", error);
+                                        }
                                     }
                                 }
+                                
                             }
                         });
                     });
@@ -522,14 +752,14 @@
                         var mujeres = {{mujeresUnicas|safe}};
                         var total = hombres + mujeres;
                         var ctx = document.getElementById('gaugeChart').getContext('2d');
-                        
+                    
                         var gaugeChart = new Chart(ctx, {
                             type: 'doughnut',
                             data: {
                                 labels: ['Hombres', 'Mujeres'],
                                 datasets: [{
                                     data: [hombres, mujeres],
-                                    backgroundColor: ['#0094f7', '#ff0000'], 
+                                    backgroundColor: ['#0094f7', '#ff0000'],
                                     borderWidth: 0
                                 }]
                             },
@@ -541,7 +771,7 @@
                                 cutout: '70%', 
                                 plugins: {
                                     legend: {
-                                        display: false 
+                                        display: false
                                     },
                                     tooltip: {
                                         enabled: true
@@ -549,16 +779,15 @@
                                 },
                                 layout: {
                                     padding: {
-                                        bottom: 10 
+                                        bottom: 10
                                     }
                                 }
                             },
                             plugins: [{
-                                
                                 afterDraw: function (chart) {
                                     var { width, height, ctx } = chart;
                                     ctx.restore();
-                                    var fontSize = (height / 130).toFixed(2);
+                                    var fontSize = (height / 135).toFixed(2);
                                     ctx.font = `${fontSize}em sans-serif`;
                                     ctx.textBaseline = "middle";
                                     ctx.fillStyle = "#000000"; 
@@ -570,7 +799,83 @@
                                 }
                             }]
                         });
+                        
+                        document.getElementById('gaugeChart').onclick = async function (event) {
+                            const elements = gaugeChart.getElementsAtEventForMode(event, 'nearest', { intersect: true }, false);
+                        
+                            if (elements.length > 0) {
+                                var index = elements[0].index;
+                                var genero = gaugeChart.data.labels[index];
+                        
+                                try {
+                                    const link = `/genero/${genero}`;
+                                    const width = 500;
+                                    const height = 700;
+                        
+                                    const left = window.screenX + (window.innerWidth / 2) - (width / 2);
+                                    const top = window.screenY + (window.innerHeight / 2) - (height / 2);
+                        
+                                    const nuevaVentana = window.open("", "_blank", `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
+                        
+                                    if (nuevaVentana) {
+
+                                        nuevaVentana.document.open();
+                                        nuevaVentana.document.write(`
+                                            <!DOCTYPE html>
+                                            <html lang="en">
+                                            <head>
+                                                <meta charset="UTF-8">
+                                                <title>Cargando...</title>
+                                                <style>
+                                                    body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; }
+                                                    .lds-dual-ring {
+                                                        color: #000;
+                                                    }
+                                                    .lds-dual-ring, .lds-dual-ring:after {
+                                                        box-sizing: border-box;
+                                                    }
+                                                    .lds-dual-ring {
+                                                        display: inline-block;
+                                                        width: 80px;
+                                                        height: 80px;
+                                                    }
+                                                    .lds-dual-ring:after {
+                                                        content: " ";
+                                                        display: block;
+                                                        width: 64px;
+                                                        height: 64px;
+                                                        margin: 8px;
+                                                        border-radius: 50%;
+                                                        border: 6.4px solid currentColor;
+                                                        border-color: currentColor transparent currentColor transparent;
+                                                        animation: lds-dual-ring 1.2s linear infinite;
+                                                    }
+                                                    @keyframes lds-dual-ring {
+                                                        0% { transform: rotate(0deg); }
+                                                        100% { transform: rotate(360deg); }
+                                                    }
+                                                </style>
+                                            </head>
+                                            <body>
+                                                <div class="lds-dual-ring"></div>
+                                            </body>
+                                            </html>
+                                        `);
+                                        nuevaVentana.document.close();
+                        
+                                        // Redirigir a la URL de destino cuando esté lista
+                                        nuevaVentana.location.href = link;
+                                    } else {
+                                        console.error("No se pudo abrir la nueva ventana.");
+                                    }
+                                } catch (error) {
+                                    console.error("Error al abrir la nueva ventana:", error);
+                                }
+                            }
+                        };
+                        
                     });
+                    
 
                     document.addEventListener("DOMContentLoaded", function () {
                         var casados = {{casadosUnicos|safe}}; 
@@ -578,14 +883,14 @@
                         var total = casados + solteros;
                     
                         var ctx2 = document.getElementById('gaugeChart2').getContext('2d');
-                        
+                    
                         var gaugeChart2 = new Chart(ctx2, {
                             type: 'doughnut',
                             data: {
                                 labels: ['Casados', 'Solteros'],
                                 datasets: [{
                                     data: [casados, solteros],
-                                    backgroundColor: ['#e300eb', '#fff700'],
+                                    backgroundColor: ['#12bde3', '#f51651'],
                                     borderWidth: 0
                                 }]
                             },
@@ -597,39 +902,159 @@
                                 cutout: '70%', 
                                 plugins: {
                                     legend: {
-                                        display: false 
+                                        display: false
                                     },
                                     tooltip: {
-                                        enabled: true 
+                                        enabled: true
                                     }
                                 },
                                 layout: {
                                     padding: {
-                                        bottom: 10 
+                                        bottom: 10
                                     }
                                 }
                             },
                             plugins: [{
-                                
                                 afterDraw: function (chart) {
                                     var { width, height, ctx } = chart;
                                     ctx.restore();
-                                    var fontSize = (height / 130).toFixed(2);
+                                    var fontSize = (height / 135).toFixed(2);
                                     ctx.font = `${fontSize}em sans-serif`;
                                     ctx.textBaseline = "middle";
                                     ctx.fillStyle = "#000000"; 
                     
                                     var text = total + " Clientes",
                                         textX = Math.round((width - ctx.measureText(text).width) / 2),
-                                        textY = height / 1.45; 
+                                        textY = height / 1.45;
                     
                                     ctx.fillText(text, textX, textY);
                                     ctx.save();
                                 }
                             }]
                         });
+
+                        document.getElementById('gaugeChart2').onclick = async function (event) {
+                            const elements = gaugeChart2.getElementsAtEventForMode(event, 'nearest', { intersect: true }, false);
+                        
+                            if (elements.length > 0) {
+                                var index = elements[0].index;
+                                var estadoCivil = gaugeChart2.data.labels[index];
+                        
+                                try {
+                                    const link = `/estadoCivil/${estadoCivil}`;
+                                    const width = 500;
+                                    const height = 700;
+
+                                    const left = window.screenX + (window.innerWidth / 2) - (width / 2);
+                                    const top = window.screenY + (window.innerHeight / 2) - (height / 2);
+
+                                    const nuevaVentana = window.open("", "_blank", `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
+
+                                    if (nuevaVentana) {
+
+                                        nuevaVentana.document.open();
+                                        nuevaVentana.document.write(`
+                                            <!DOCTYPE html>
+                                            <html lang="en">
+                                            <head>
+                                                <meta charset="UTF-8">
+                                                <title>Cargando...</title>
+                                                <style>
+                                                    body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; }
+                                                    .lds-dual-ring {
+                                                        color: #000;
+                                                    }
+                                                    .lds-dual-ring, .lds-dual-ring:after {
+                                                        box-sizing: border-box;
+                                                    }
+                                                    .lds-dual-ring {
+                                                        display: inline-block;
+                                                        width: 80px;
+                                                        height: 80px;
+                                                    }
+                                                    .lds-dual-ring:after {
+                                                        content: " ";
+                                                        display: block;
+                                                        width: 64px;
+                                                        height: 64px;
+                                                        margin: 8px;
+                                                        border-radius: 50%;
+                                                        border: 6.4px solid currentColor;
+                                                        border-color: currentColor transparent currentColor transparent;
+                                                        animation: lds-dual-ring 1.2s linear infinite;
+                                                    }
+                                                    @keyframes lds-dual-ring {
+                                                        0% { transform: rotate(0deg); }
+                                                        100% { transform: rotate(360deg); }
+                                                    }
+                                                </style>
+                                            </head>
+                                            <body>
+                                                <div class="lds-dual-ring"></div>
+                                            </body>
+                                            </html>
+                                        `);
+                                        nuevaVentana.document.close();
+
+                                        nuevaVentana.location.href = link;
+                                    } else {
+                                        console.error("No se pudo abrir la nueva ventana.");
+                                    }
+                                } catch (error) {
+                                    console.error("Error al abrir la nueva ventana:", error);
+                                }
+                            }
+                        };
+                        
                     });
-                    
+
+                    function openPage(url) {
+                        const newWindow = window.open('', '_blank', 'width=500,height=700,top=100,left=100,resizable=yes');
+                        newWindow.document.write(`
+                            <html>
+                                <head>
+                                    <title>Cargando...</title>
+                                    <style>
+                                        .lds-dual-ring {
+                                            display: inline-block;
+                                            width: 80px;
+                                            height: 80px;
+                                            color: #000;
+                                        }
+                                        .lds-dual-ring:after {
+                                            content: " ";
+                                            display: block;
+                                            width: 64px;
+                                            height: 64px;
+                                            margin: 8px;
+                                            border-radius: 50%;
+                                            border: 6.4px solid currentColor;
+                                            border-color: currentColor transparent currentColor transparent;
+                                            animation: lds-dual-ring 1.2s linear infinite;
+                                        }
+                                        @keyframes lds-dual-ring {
+                                            0% { transform: rotate(0deg); }
+                                            100% { transform: rotate(360deg); }
+                                        }
+                                        body {
+                                            background-color: ##ffffff;
+                                            display: flex;
+                                            justify-content: center;
+                                            align-items: center;
+                                            height: 100vh;
+                                            margin: 0;
+                                        }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class="lds-dual-ring"></div>
+                                </body>
+                            </html>
+                        `);
+                        setTimeout(() => {
+                            newWindow.location.href = url;
+                        });
+                    }
                 </script>
             </main>
         </div>

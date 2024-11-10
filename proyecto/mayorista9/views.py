@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from . import models
 import pandas as pd 
 import os
 import numpy as np
@@ -9,65 +10,38 @@ nombre_archivo = "mayorista9/static/Caso 3-train -dificil.csv"
 ruta = os.path.join(directorio_actual, nombre_archivo)
 ruta = ruta.replace("\\", "/")
 tabla = pd.read_csv(ruta)
-##df_html = fuente.head().to_html()
+#df_html = fuente.head().to_html()
 
 def Index(request):
+    from .models import (HombresUnicos, MujeresUnicas, ContarCasados, ContarSolteros, ContarProductosVendidos, 
+                        PrecioPromedio, CantidadCompras, ProductosPorEdad, ProductosTotalesPorEdad, ProductosPorCiudad)
 
-    #Extraccion de datos para el grafico N°1
-    Edades_tabla = tabla["Age"].unique()
+    Rango_edades = ["0-17", "18-25", "26-35", "36-45", "46-50", "51-55", "55+"]
 
-    Rango_edades = [Edades_tabla[0], Edades_tabla[-1], Edades_tabla[2], Edades_tabla[-2], Edades_tabla[3], Edades_tabla[4], Edades_tabla[1]]
+    Producto1 = ProductosPorEdad(1)
+    Producto2 = ProductosPorEdad(2)
+    Producto3 = ProductosPorEdad(3)
+    
+    suma1 = round(ProductosTotalesPorEdad("26-35")/1000000, 2)
+    edadesMax1 = "26-35"
+    
+    suma2 = round(ProductosTotalesPorEdad("36-45")/1000000, 2)
+    edadesMax2 = "36-45"
+    
+    suma3 = round(ProductosTotalesPorEdad("18-25")/1000000, 2)
+    edadesMax3 = "18-25"
+    
+    HombresUnicos = HombresUnicos()
+    MujeresUnicas = MujeresUnicas()
 
-    Producto1 = [(tabla[tabla["Age"] == edad]["Product_Category_1"].fillna(0).sum()/1000000) for edad in Rango_edades]
-    Producto2 = [(tabla[tabla["Age"] == edad]["Product_Category_2"].fillna(0).sum()/1000000) for edad in Rango_edades]
-    Producto3 = [(tabla[tabla["Age"] == edad]["Product_Category_3"].fillna(0).sum()/1000000) for edad in Rango_edades]
+    solterosUnicos = ContarSolteros()
+    casadosUnicos = ContarCasados()
     
-    Producto1 = [float(x) for x in Producto1]
-    Producto2 = [float(x) for x in Producto2]
-    Producto3 = [float(x) for x in Producto3]
+    cantidadCompraPromedio = PrecioPromedio()
+    cantidadTotal = ContarProductosVendidos()
+    cantidadCompras = CantidadCompras()
     
-    #Extraccion de datos para el grafico N°2
-    
-    SolterosA = tabla[tabla["City_Category"] == "A"]["Marital_Status"].sum()
-    SolterosB = tabla[tabla["City_Category"] == "B"]["Marital_Status"].sum()
-    SolterosC = tabla[tabla["City_Category"] == "C"]["Marital_Status"].sum()
-    
-    Solteros =[int(SolterosA), int(SolterosB), int(SolterosC)]
-
-    #Extraccion datos card 1 (top 3)
-    sumaTotal = []
-    for x in range(len(Producto1)):
-        sumaTotal.append(Producto1[x]+Producto2[x]+Producto3[x])
-    
-    suma1 = round(max(sumaTotal), 2)
-    edadesMax1 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
-    sumaTotal[sumaTotal.index(max(sumaTotal))]-=3
-    
-    suma2 = round(max(sumaTotal), 2)
-    edadesMax2 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
-    sumaTotal[sumaTotal.index(max(sumaTotal))]-=3
-    
-    suma3 = round(max(sumaTotal), 2)
-    edadesMax3 = (Rango_edades[sumaTotal.index(max(sumaTotal))])
-    
-    #extraccion de datos para los dos graficos semi-circulares
-    tablaUnicos = tabla.drop_duplicates(subset=['User_ID'], keep='first')
-    
-    HombresUnicos = tablaUnicos[tablaUnicos["Gender"] == 'M']['User_ID'].count()
-    MujeresUnicas = tablaUnicos[tablaUnicos["Gender"] == 'F']['User_ID'].count()
-    
-    solterosUnicos = tablaUnicos[tablaUnicos["Marital_Status"] == 0]['User_ID'].count()
-    casadosUnicos = tablaUnicos[tablaUnicos["Marital_Status"] == 1]['User_ID'].count()
-    
-    #extraccion indices
-    cantidadCompraPromedio = round(tabla["Purchase"].mean())
-        
-    cantidadP1 = tabla["Product_Category_1"].sum()
-    cantidadP2 = tabla["Product_Category_2"].sum()
-    cantidadP3 = tabla["Product_Category_3"].sum()
-    cantidadTotal = int(cantidadP1) + int(cantidadP2) + int(cantidadP3)
-    
-    cantidadCompras = int(tabla["User_ID"].count())
+    ProductosPorCiudad = ProductosPorCiudad()
     
     context = {
         'labels1' : Rango_edades,
@@ -75,7 +49,7 @@ def Index(request):
         'producto2' : Producto2,
         'producto3' : Producto3,
         'labels2' : ["A","B","C"],
-        'solteros' : Solteros,
+        'ProductosPorCiudad' : ProductosPorCiudad,
         'suma1' : suma1,
         'suma2' : suma2,
         'suma3' : suma3,
@@ -94,47 +68,68 @@ def Index(request):
     return render(request, 'DashboardInicial.html', context)
 
 def BarrasAgrupadas(request, label, index):
+    from decimal import Decimal
+    from .models import (DatosEdadProducto, DatosEdadProductoPorCiudad, DatosEdadPrecioPromedioOcupacion, DatosEdadCantidadOcupacion)
     
-    columnaSeleccionada = int(index)
+    columnaSeleccionada = int(index)+1
     edadSeleccionada = str(label)
+    datosFiltro = DatosEdadProducto(columnaSeleccionada, edadSeleccionada)
+    DatosINT = [int(elemento) if isinstance(elemento, Decimal) else elemento for elemento in datosFiltro]
+
     TiposProductos = ["Product_Category_1","Product_Category_2","Product_Category_3"]
     Encabezado = ["producto categoría 1", "producto categoría 2", "producto categoría 3"]
     Colores = ["#CE2024","#11D6C3","#DEE810"]
-    selectorColor = Colores[columnaSeleccionada]
-    ProductoSeleccionado = TiposProductos[columnaSeleccionada]
-    titulo = Encabezado[columnaSeleccionada]
+    selectorColor = Colores[columnaSeleccionada-1]
+    ProductoSeleccionado = TiposProductos[columnaSeleccionada-1]
+    titulo = Encabezado[columnaSeleccionada-1]
+
+    cantidadClientes = DatosINT[0]
+    cantidadPromedioCompra = DatosINT[1]
+    registrosCompra = DatosINT[2]
+    gastoPromedio = DatosINT[3]
+    ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
     
-    MargenEdad = tabla[tabla["Age"] == edadSeleccionada]
+    datosFiltro = DatosEdadCantidadOcupacion(columnaSeleccionada, edadSeleccionada)
+    cantidadOcupacion = {}
+    num = 0
+    cantidadOcupacionFinal = []
+    for elemento in datosFiltro:
+        if isinstance(elemento, Decimal): 
+            cantidadOcupacion[int(elemento[0])] = int(elemento)
+        else:
+            cantidadOcupacion[elemento[0]] = elemento
+    for num in ocupaciones:
+        if num not in cantidadOcupacion.keys():
+            cantidadOcupacionFinal.append(0)
+        else:
+            cantidadOcupacionFinal.append(float(np.log10(cantidadOcupacion[num][1]))*3.5)
     
-    if columnaSeleccionada==0:
-        MargenEdad = MargenEdad.drop(columns=["Product_Category_2","Product_Category_3"])
+    cantidadOcupacion = []
+    for x in cantidadOcupacionFinal:
+        cantidadOcupacion.append(round(x, 2))
         
-    if columnaSeleccionada==1:
-        MargenEdad = MargenEdad.drop(columns=["Product_Category_1","Product_Category_3"])
-
-    if columnaSeleccionada==2:
-        MargenEdad = MargenEdad.drop(columns=["Product_Category_1","Product_Category_2"])
-
-    MargenEdad = MargenEdad.dropna(subset=[ProductoSeleccionado])
-    tablaUnicos = MargenEdad.drop_duplicates(subset=['User_ID'], keep='first')   
-    cantidadClientes = tablaUnicos["User_ID"].count()
-    cantidadPromedioCompra = round(MargenEdad[ProductoSeleccionado].mean())
-    registrosCompra = MargenEdad["User_ID"].count()
-    gastoPromedio = round(MargenEdad["Purchase"].mean(),2)
+    datosFiltro = DatosEdadProductoPorCiudad(columnaSeleccionada, edadSeleccionada)
+    listaCompraCiudad = [int(elemento) if isinstance(elemento, Decimal) else elemento for elemento in datosFiltro]
     
-    cantidadCompraCiudadA = MargenEdad[MargenEdad["City_Category"]=="A"]["City_Category"].count()
-    cantidadCompraCiudadB = MargenEdad[MargenEdad["City_Category"]=="B"]["City_Category"].count()
-    cantidadCompraCiudadC = MargenEdad[MargenEdad["City_Category"]=="C"]["City_Category"].count()
+    datosFiltro = DatosEdadPrecioPromedioOcupacion(columnaSeleccionada, edadSeleccionada)
+    PrecioOcupacion = {}
+    PromedioPrecioOcupacion = []
+    for elemento in datosFiltro:
+        if isinstance(elemento, Decimal): 
+            PrecioOcupacion[int(elemento[0])] = int(elemento)
+        else:
+            PrecioOcupacion[elemento[0]] = elemento
     
-    listaCompraCiudad = [int(cantidadCompraCiudadA), int(cantidadCompraCiudadB), int(cantidadCompraCiudadC)]
-        
-    ocupaciones = MargenEdad["Occupation"].unique().tolist()
-    ocupaciones.sort()
+    for num in ocupaciones:
+        if num not in PrecioOcupacion.keys():
+            PromedioPrecioOcupacion.append(0)
+        else:
+            PromedioPrecioOcupacion.append(int(PrecioOcupacion[num][1]))
     
-    cantidadOcupacion = [(float(np.log10((MargenEdad[MargenEdad["Occupation"] == x]["Occupation"]).count()))*1.9) for x in ocupaciones]
-    PrecioPromedioOcupacion = [int((MargenEdad[MargenEdad["Occupation"] == x]["Purchase"]).mean()) for x in ocupaciones]
+    Promedio = []
+    for x in PromedioPrecioOcupacion:
+        Promedio.append(round(x, 2))
 
-    print(cantidadOcupacion)
     context = {
         'label' : edadSeleccionada,
         'index' : ProductoSeleccionado,
@@ -147,13 +142,130 @@ def BarrasAgrupadas(request, label, index):
         'ciudades' : ["A","B","C"],
         'listaCompraCiudad' : listaCompraCiudad,
         'ocupaciones' : ocupaciones,
-        'precioPromedioOcupacion' : PrecioPromedioOcupacion,
+        'precioPromedioOcupacion' : Promedio,
         'cantidadOcupacion' : cantidadOcupacion
     }
     return render(request, 'detalleBarrasAgrupadas.html', context)
 
-def Login(request):
-    return render(request, 'Login.html')
+def ComprasCiudad(request, ciudad):
+    
+    from .models import (ClientesPorCiudad, ComprasPorCiudad, GastoPromedioPorCiudad, ProductosVendidosPorCiudad,
+                        GastoPromedioPorOcupacionYCiudad, ClientesPorOcupacionYCiudad, ContarProductosPromedioPorCiudad)
+    
+    ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    cantidadClientes = ClientesPorCiudad(ciudad)
+    cantidadCompras = ComprasPorCiudad(ciudad)
+    gastoPromedio = round(GastoPromedioPorCiudad(ciudad))
+    ProductosPorCategoria = ProductosVendidosPorCiudad(ciudad)
+    GastoPromedioOcupacion = GastoPromedioPorOcupacionYCiudad(ciudad)
+    ClientesPorOcupacion = ClientesPorOcupacionYCiudad(ciudad)
+    
+    ClintesPorOcupacionFinal = []
+    for x in range(len(ClientesPorOcupacion)):
+        ClintesPorOcupacionFinal.append((float(np.log10(ClientesPorOcupacion[x]))*3.5))
+    
+    ProductosPromedioComprado = ContarProductosPromedioPorCiudad(ciudad)
+    if ciudad == "A":
+        color = "#fce512"
+    if ciudad == "B":
+        color = "#ed7226"
+    if ciudad == "C":
+        color = "#ed3e26"
+        
+    context = {
+        'color' : color,
+        'categoria' : ciudad,
+        'ocupaciones' : ocupaciones,
+        'cantidadClientes' : cantidadClientes,
+        'cantidadCompras' : cantidadCompras,
+        'gastoPromedio' : gastoPromedio,
+        'ProductosPorCategoria' : ProductosPorCategoria,
+        'GastoPromedioOcupacion' : GastoPromedioOcupacion,
+        'ClintesPorOcupacionFinal' : ClintesPorOcupacionFinal,
+        'ContarProductosPromedioPorCiudad' : ProductosPromedioComprado,
+    }
+    
+    return render(request, 'ComprasCiudad.html', context)
+
+
+def estadoCivil(resquest, estadoCivil):
+    
+    from .models import (ContarRegistrosPorEstadoCivil, PromedioProductosCompradosPorEstadoCivil, GastoPromedioPorEstadoCivil,
+                        ContarProductosPorCategoriaYEstadoCivil, GastoPromedioPorOcupacionYEstadoCivil, ContarClientesPorOcupacionYEstadoCivil)
+    
+    estadoCivil = estadoCivil.lower()
+    if estadoCivil == 'solteros':
+        seleccion = 0
+    else:
+        seleccion = 1
+        
+    cantidadRegistros = ContarRegistrosPorEstadoCivil(seleccion)
+    PromedioProductosComprados = PromedioProductosCompradosPorEstadoCivil(seleccion)
+    GastoPromedio = GastoPromedioPorEstadoCivil(seleccion)
+    ContarProductosPorCategoria = ContarProductosPorCategoriaYEstadoCivil(seleccion)
+    GastoPromedioPorOcupacion = GastoPromedioPorOcupacionYEstadoCivil(seleccion)
+    ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    ContarClientesPorOcupacion = ContarClientesPorOcupacionYEstadoCivil(seleccion)
+    
+    ClintesPorOcupacionFinal = []
+    for x in range(len(ContarClientesPorOcupacion)):
+        ClintesPorOcupacionFinal.append((float(np.log10(ContarClientesPorOcupacion[x]))*3.5))
+    
+    context = {
+        'estadoCivil' : estadoCivil,
+        'cantidadRegistros' : cantidadRegistros,
+        'GastoPromedio' : GastoPromedio,
+        'PromedioProductosComprados' : PromedioProductosComprados,
+        'ContarProductosPorCategoria' : ContarProductosPorCategoria,
+        'CategoriasDeProductos' : ["1", "2", "3"],
+        'GastoPromedioPorOcupacion' : GastoPromedioPorOcupacion,
+        'ocupaciones' : ocupaciones,
+        'ClintesPorOcupacionFinal' : ClintesPorOcupacionFinal
+    }
+    
+    return render(resquest, 'estadoCivil.html', context)
+
+def Genero(resquest, genero):
+    from .models import (ContarRegistrosPorGenero, CantidadPromedioProductosPorGenero, GastoPromedioPorGenero, 
+                        CantidadProductosPorCategoriaYGenero, ContarClientesPorOcupacionYGenero,
+                        PrecioFacturaPromedioPorOcupacionYGenero)
+    
+    genero = genero.lower()
+    if genero == 'hombres':
+        seleccion = 'M'
+    else:
+        seleccion = 'F'
+        
+    CantidadRegistros = ContarRegistrosPorGenero(seleccion)
+    PromedioProductosComprados = CantidadPromedioProductosPorGenero(seleccion)
+    GastoPromedio = GastoPromedioPorGenero(seleccion)
+    ContarProductosPorCategoria = CantidadProductosPorCategoriaYGenero(seleccion)
+    ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    ContarClientesPorOcupacion = ContarClientesPorOcupacionYGenero(seleccion)
+    GastoPromedioPorOcupacion =  PrecioFacturaPromedioPorOcupacionYGenero(seleccion)
+    ClintesPorOcupacionFinal = []
+    for x in range(len(ContarClientesPorOcupacion)):
+        ClintesPorOcupacionFinal.append((float(np.log10(ContarClientesPorOcupacion[x]))*3.5))
+    
+    print(ContarProductosPorCategoria)
+    
+    context = {
+        'genero' : genero,
+        'cantidadRegistros' : CantidadRegistros,
+        'PromedioProductosComprados' : PromedioProductosComprados,
+        'GastoPromedio' : GastoPromedio,
+        'ContarProductosPorCategoria' : ContarProductosPorCategoria,
+        'CategoriasDeProductos' : ["1", "2", "3"],
+        'GastoPromedioPorOcupacion' : GastoPromedioPorOcupacion,
+        'ocupaciones' : ocupaciones,
+        'ClintesPorOcupacionFinal' : ClintesPorOcupacionFinal
+    }
+    
+    return render(resquest, 'genero.html', context)
 
 def Homepage(request):
     return render(request, 'Homepage.html')
+
+def Login(request):
+    
+    return render(request, 'Login.html')

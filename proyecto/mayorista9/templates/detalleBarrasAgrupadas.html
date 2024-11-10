@@ -29,7 +29,7 @@
         <div class="row" style = "margin-top: 15px">
             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
-                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <h5 class="card-title mb-0">Cantidad de clientes</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
@@ -39,7 +39,7 @@
             </div>
             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
-                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <h5 class="card-title mb-0">Promedio de productos comprados</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
@@ -49,7 +49,7 @@
             </div>
             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
-                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <h5 class="card-title mb-0">Cantidad de registros de compras</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
@@ -59,7 +59,7 @@
             </div>
             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
-                    <div class="card-header text-white" style="background-color: #0f00b5; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                    <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
                         <h5 class="card-title mb-0">Gasto promedio de compra</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
@@ -73,8 +73,8 @@
     <div class="row" style="padding-top: 30px">
         <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
             <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
-                <div class="card-header text-white" style="background-color: #0f00b5;">
-                    <h5 class="card-title mb-0">Compras por rango de edad</h5>
+                <div class="card-header text-white" style="background-color: #1c1b1b;">
+                    <h5 class="card-title mb-0">Productos comprados por categoria de ciudad</h5>
                 </div>
                 <div class="card-body p-4 bg-light">
                     <canvas id="mainChart3" style="width: 100%; height: auto;"></canvas>
@@ -83,8 +83,8 @@
         </div>
         <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
             <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; "> <!-- Cambia la altura aquí -->
-                <div class="card-header text-white" style="background-color: #0f00b5;">
-                    <h5 class="card-title mb-0">Gasto promedio por ocupacion</h5>
+                <div class="card-header text-white" style="background-color: #1c1b1b;">
+                    <h5 class="card-title mb-0">Gasto promedio por ocupación</h5>
                 </div>
                 <div class="card-body p-4 bg-light">
                     <canvas id="mainChart4" style="width: 100%; height: auto;"></canvas>
@@ -100,8 +100,8 @@
                     {
                         label: 'Ciudades',
                         data: {{ listaCompraCiudad|safe }},
-                        backgroundColor: ["#e36200", "#34de00", "#b500de"],
-                        borderColor: ["#e36200", "#34de00", "#b39200"],
+                        backgroundColor: ["#fce512", "#ed7226", "#ed3e26"],
+                        borderColor: ["#edd813", "#de6418", "#c93520"],
                         borderWidth: 1
                     }
                 ]
@@ -171,7 +171,7 @@
                         x: {
                             title: {
                                 display: true,
-                                text: 'Numero de ocupacion'
+                                text: 'Número de ocupación'
                             },
                             type: 'linear',  // Define una escala lineal para el eje X
                             position: 'bottom'
