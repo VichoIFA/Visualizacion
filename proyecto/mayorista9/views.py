@@ -78,8 +78,10 @@ def BarrasAgrupadas(request, label, index):
 
     TiposProductos = ["Product_Category_1","Product_Category_2","Product_Category_3"]
     Encabezado = ["producto categoría 1", "producto categoría 2", "producto categoría 3"]
-    Colores = ["#CE2024","#11D6C3","#DEE810"]
+    Colores = ["#590212", "#a60f48", "#D97C2B"]
+    colorLetra = ["white", "white", "black"]
     selectorColor = Colores[columnaSeleccionada-1]
+    selectorColorLetra = colorLetra[columnaSeleccionada-1]
     ProductoSeleccionado = TiposProductos[columnaSeleccionada-1]
     titulo = Encabezado[columnaSeleccionada-1]
 
@@ -135,6 +137,7 @@ def BarrasAgrupadas(request, label, index):
         'index' : ProductoSeleccionado,
         'header' : titulo,
         'color' : selectorColor,
+        'colorLetra' : selectorColorLetra,
         'cantidadClientes' : cantidadClientes,
         'cantidadPromedioCompra' : cantidadPromedioCompra,
         'registrosCompra' : registrosCompra,
@@ -166,14 +169,20 @@ def ComprasCiudad(request, ciudad):
     
     ProductosPromedioComprado = ContarProductosPromedioPorCiudad(ciudad)
     if ciudad == "A":
-        color = "#fce512"
+        color = "#590212"
+        colorLetra = 'white'
+        
     if ciudad == "B":
-        color = "#ed7226"
+        color = "#a60f48"
+        colorLetra = 'white'
+        
     if ciudad == "C":
-        color = "#ed3e26"
+        color = "#D97C2B"
+        colorLetra = 'Black'
         
     context = {
         'color' : color,
+        'colorLetra' : colorLetra,
         'categoria' : ciudad,
         'ocupaciones' : ocupaciones,
         'cantidadClientes' : cantidadClientes,
@@ -196,8 +205,12 @@ def estadoCivil(resquest, estadoCivil):
     estadoCivil = estadoCivil.lower()
     if estadoCivil == 'solteros':
         seleccion = 0
+        color = '#D97C2B'
+        colorLetra = 'black'
     else:
         seleccion = 1
+        color = '#a60f48'
+        colorLetra = 'white'
         
     cantidadRegistros = ContarRegistrosPorEstadoCivil(seleccion)
     PromedioProductosComprados = PromedioProductosCompradosPorEstadoCivil(seleccion)
@@ -212,6 +225,8 @@ def estadoCivil(resquest, estadoCivil):
         ClintesPorOcupacionFinal.append((float(np.log10(ContarClientesPorOcupacion[x]))*3.5))
     
     context = {
+        'color' : color,
+        'colorLetra' : colorLetra,
         'estadoCivil' : estadoCivil,
         'cantidadRegistros' : cantidadRegistros,
         'GastoPromedio' : GastoPromedio,
@@ -233,8 +248,12 @@ def Genero(resquest, genero):
     genero = genero.lower()
     if genero == 'hombres':
         seleccion = 'M'
+        color = '#D97C2B'
+        colorLetra = 'black'
     else:
         seleccion = 'F'
+        color = '#590212'
+        colorLetra = 'white'
         
     CantidadRegistros = ContarRegistrosPorGenero(seleccion)
     PromedioProductosComprados = CantidadPromedioProductosPorGenero(seleccion)
@@ -250,6 +269,8 @@ def Genero(resquest, genero):
     print(ContarProductosPorCategoria)
     
     context = {
+        'color' : color,
+        'colorLetra' :colorLetra,
         'genero' : genero,
         'cantidadRegistros' : CantidadRegistros,
         'PromedioProductosComprados' : PromedioProductosComprados,
