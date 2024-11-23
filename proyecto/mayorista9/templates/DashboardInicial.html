@@ -136,11 +136,11 @@
             top: 0; 
         }
         
-        @media (max-width: 768px) {
+        @media (max-width: 767px) {
             #sideNavDashboard {
                 width: 0; 
-                overflow: hidden; 
-                display: none:
+                overflow: hidden !important;
+                display: none;
             }
         }
         
@@ -213,7 +213,6 @@
             </div>
             
             <img src="{% static 'images/perfil.png' %}" alt="Descripción de la imagen" width="50" height="50" class="rounded-circle">
-    
             <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>

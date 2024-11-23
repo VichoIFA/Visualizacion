@@ -156,61 +156,35 @@ def DatosEdadPrecioPromedioOcupacion(categoria, ocupacion):
         total = [list(row) for row in result]
     return total
 
-def DatosEdadCantidadOcupacion(categoria, ocupacion):
+def DatosEdadCantidadOcupacion(categoria, edad):
     with connection.cursor() as cursor:
-        cursor.callproc('ContarClientesPorOcupacion',[categoria, ocupacion])
+        cursor.callproc('ContarClientesPorOcupacion',[categoria, edad])
         result = cursor.fetchall()
         total = [list(row) for row in result]
     return total
 
-def ClientesPorCiudad(CategoriaCiudad):
+def IndicesPorCiudad(CategoriaCiudad):
     with connection.cursor() as cursor:
-        cursor.callproc('ContarClientesPorCategoriaCiudad',[CategoriaCiudad])
-        result = cursor.fetchall()
-        total = result[0][0]
-    return total
+        cursor.callproc('IndicesPorCiudad',[CategoriaCiudad])
+        result = cursor.fetchone()
+    return result
 
-def ComprasPorCiudad(CategoriaCiudad):
+def DatosOcupacionesPorCiudad(CategoriaCiudad):
     with connection.cursor() as cursor:
-        cursor.callproc('ContarComprasPorCiudad',[CategoriaCiudad])
+        cursor.callproc('DatosOcupacionesPorCiudad',[CategoriaCiudad])
         result = cursor.fetchall()
-        total = result[0][0]
-    return total
-
-def GastoPromedioPorCiudad(CategoriaCiudad):
-    with connection.cursor() as cursor:
-        cursor.callproc('CalcularGastoPromedioPorCiudad',[CategoriaCiudad])
-        result = cursor.fetchall()
-        total = result[0][0]
-    return total
+    return [list(row) for row in result]
 
 def ProductosVendidosPorCiudad(ciudad):
     with connection.cursor() as cursor:
-        cursor.callproc('ContarProductosPorCategoriaYCiudad',[ciudad])
-        result = cursor.fetchall()
-        total = [int(row[0]) for row in result]
-    return total
-
-def GastoPromedioPorOcupacionYCiudad(ciudad):
-    with connection.cursor() as cursor:
-        cursor.callproc('CalcularGastoPromedioPorOcupacionYCiudad',[ciudad])
-        result = cursor.fetchall()
-        total = [int(row[0]) for row in result]
-    return total
-
-def ClientesPorOcupacionYCiudad(ciudad):
-    with connection.cursor() as cursor:
-        cursor.callproc('ContarClientesPorOcupacionYCiudad',[ciudad])
-        result = cursor.fetchall()
-        total = [int(row[0]) for row in result]
-    return total
-
-def ContarProductosPromedioPorCiudad(CategoriaCiudad):
-    with connection.cursor() as cursor:
-        cursor.callproc('ContarProductosPromedioPorCiudad',[CategoriaCiudad])
-        result = cursor.fetchall()
-        total = result[0][0]
-    return total
+        cursor.callproc('ContarProductosPorCategoriaYCiudad', [ciudad])
+        result = []
+        while True:
+            row = cursor.fetchone()
+            if row is None:
+                break
+            result.append(int(row[0]))
+    return result
 
 def ContarRegistrosPorEstadoCivil(estadoCivil):
     with connection.cursor() as cursor:

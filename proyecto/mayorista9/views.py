@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from . import models
 import pandas as pd 
@@ -13,35 +13,33 @@ tabla = pd.read_csv(ruta)
 #df_html = fuente.head().to_html()
 
 def Index(request):
-    from .models import (HombresUnicos, MujeresUnicas, ContarCasados, ContarSolteros, ContarProductosVendidos, 
-                        PrecioPromedio, CantidadCompras, ProductosPorEdad, ProductosTotalesPorEdad, ProductosPorCiudad)
 
     Rango_edades = ["0-17", "18-25", "26-35", "36-45", "46-50", "51-55", "55+"]
 
-    Producto1 = ProductosPorEdad(1)
-    Producto2 = ProductosPorEdad(2)
-    Producto3 = ProductosPorEdad(3)
+    Producto1 = models.ProductosPorEdad(1)
+    Producto2 = models.ProductosPorEdad(2)
+    Producto3 = models.ProductosPorEdad(3)
     
-    suma1 = round(ProductosTotalesPorEdad("26-35")/1000000, 2)
+    suma1 = round(models.ProductosTotalesPorEdad("26-35")/1000000, 2)
     edadesMax1 = "26-35"
     
-    suma2 = round(ProductosTotalesPorEdad("36-45")/1000000, 2)
+    suma2 = round(models.ProductosTotalesPorEdad("36-45")/1000000, 2)
     edadesMax2 = "36-45"
     
-    suma3 = round(ProductosTotalesPorEdad("18-25")/1000000, 2)
+    suma3 = round(models.ProductosTotalesPorEdad("18-25")/1000000, 2)
     edadesMax3 = "18-25"
     
-    HombresUnicos = HombresUnicos()
-    MujeresUnicas = MujeresUnicas()
+    HombresUnicos = models.HombresUnicos()
+    MujeresUnicas = models.MujeresUnicas()
 
-    solterosUnicos = ContarSolteros()
-    casadosUnicos = ContarCasados()
+    solterosUnicos = models.ContarSolteros()
+    casadosUnicos = models.ContarCasados()
     
-    cantidadCompraPromedio = PrecioPromedio()
-    cantidadTotal = ContarProductosVendidos()
-    cantidadCompras = CantidadCompras()
+    cantidadCompraPromedio = models.PrecioPromedio()
+    cantidadTotal = models.ContarProductosVendidos()
+    cantidadCompras = models.CantidadCompras()
     
-    ProductosPorCiudad = ProductosPorCiudad()
+    ProductosPorCiudad = models.ProductosPorCiudad()
     
     context = {
         'labels1' : Rango_edades,
@@ -69,29 +67,28 @@ def Index(request):
 
 def BarrasAgrupadas(request, label, index):
     from decimal import Decimal
-    from .models import (DatosEdadProducto, DatosEdadProductoPorCiudad, DatosEdadPrecioPromedioOcupacion, DatosEdadCantidadOcupacion)
     
     columnaSeleccionada = int(index)+1
     edadSeleccionada = str(label)
-    datosFiltro = DatosEdadProducto(columnaSeleccionada, edadSeleccionada)
+    datosFiltro = models.DatosEdadProducto(columnaSeleccionada, edadSeleccionada)
     DatosINT = [int(elemento) if isinstance(elemento, Decimal) else elemento for elemento in datosFiltro]
-
-    TiposProductos = ["Product_Category_1","Product_Category_2","Product_Category_3"]
-    Encabezado = ["producto categoría 1", "producto categoría 2", "producto categoría 3"]
-    Colores = ["#590212", "#a60f48", "#D97C2B"]
-    colorLetra = ["white", "white", "black"]
-    selectorColor = Colores[columnaSeleccionada-1]
-    selectorColorLetra = colorLetra[columnaSeleccionada-1]
-    ProductoSeleccionado = TiposProductos[columnaSeleccionada-1]
-    titulo = Encabezado[columnaSeleccionada-1]
-
+    categorias = [
+        {"tipo": "Product_Category_1", "encabezado": "producto categoría 1", "color": "#590212", "colorLetra": "white"},
+        {"tipo": "Product_Category_2", "encabezado": "producto categoría 2", "color": "#a60f48", "colorLetra": "white"},
+        {"tipo": "Product_Category_3", "encabezado": "producto categoría 3", "color": "#D97C2B", "colorLetra": "black"}
+    ]
+    
+    seleccion = categorias[columnaSeleccionada - 1]
+    selectorColor = seleccion["color"]
+    selectorColorLetra = seleccion["colorLetra"]
+    ProductoSeleccionado = seleccion["tipo"]
+    titulo = seleccion["encabezado"]
     cantidadClientes = DatosINT[0]
     cantidadPromedioCompra = DatosINT[1]
     registrosCompra = DatosINT[2]
     gastoPromedio = DatosINT[3]
     ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    
-    datosFiltro = DatosEdadCantidadOcupacion(columnaSeleccionada, edadSeleccionada)
+    datosFiltro = models.DatosEdadCantidadOcupacion(columnaSeleccionada, edadSeleccionada)
     cantidadOcupacion = {}
     num = 0
     cantidadOcupacionFinal = []
@@ -109,11 +106,9 @@ def BarrasAgrupadas(request, label, index):
     cantidadOcupacion = []
     for x in cantidadOcupacionFinal:
         cantidadOcupacion.append(round(x, 2))
-        
-    datosFiltro = DatosEdadProductoPorCiudad(columnaSeleccionada, edadSeleccionada)
+    datosFiltro = models.DatosEdadProductoPorCiudad(columnaSeleccionada, edadSeleccionada)
     listaCompraCiudad = [int(elemento) if isinstance(elemento, Decimal) else elemento for elemento in datosFiltro]
-    
-    datosFiltro = DatosEdadPrecioPromedioOcupacion(columnaSeleccionada, edadSeleccionada)
+    datosFiltro = models.DatosEdadPrecioPromedioOcupacion(columnaSeleccionada, edadSeleccionada)
     PrecioOcupacion = {}
     PromedioPrecioOcupacion = []
     for elemento in datosFiltro:
@@ -121,17 +116,15 @@ def BarrasAgrupadas(request, label, index):
             PrecioOcupacion[int(elemento[0])] = int(elemento)
         else:
             PrecioOcupacion[elemento[0]] = elemento
-    
     for num in ocupaciones:
         if num not in PrecioOcupacion.keys():
             PromedioPrecioOcupacion.append(0)
         else:
             PromedioPrecioOcupacion.append(int(PrecioOcupacion[num][1]))
-    
     Promedio = []
     for x in PromedioPrecioOcupacion:
         Promedio.append(round(x, 2))
-
+        
     context = {
         'label' : edadSeleccionada,
         'index' : ProductoSeleccionado,
@@ -151,35 +144,32 @@ def BarrasAgrupadas(request, label, index):
     return render(request, 'detalleBarrasAgrupadas.html', context)
 
 def ComprasCiudad(request, ciudad):
-    
-    from .models import (ClientesPorCiudad, ComprasPorCiudad, GastoPromedioPorCiudad, ProductosVendidosPorCiudad,
-                        GastoPromedioPorOcupacionYCiudad, ClientesPorOcupacionYCiudad, ContarProductosPromedioPorCiudad)
-    
+
     ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    cantidadClientes = ClientesPorCiudad(ciudad)
-    cantidadCompras = ComprasPorCiudad(ciudad)
-    gastoPromedio = round(GastoPromedioPorCiudad(ciudad))
-    ProductosPorCategoria = ProductosVendidosPorCiudad(ciudad)
-    GastoPromedioOcupacion = GastoPromedioPorOcupacionYCiudad(ciudad)
-    ClientesPorOcupacion = ClientesPorOcupacionYCiudad(ciudad)
     
-    ClintesPorOcupacionFinal = []
-    for x in range(len(ClientesPorOcupacion)):
-        ClintesPorOcupacionFinal.append((float(np.log10(ClientesPorOcupacion[x]))*3.5))
-    
-    ProductosPromedioComprado = ContarProductosPromedioPorCiudad(ciudad)
-    if ciudad == "A":
-        color = "#590212"
-        colorLetra = 'white'
-        
-    if ciudad == "B":
-        color = "#a60f48"
-        colorLetra = 'white'
-        
-    if ciudad == "C":
-        color = "#D97C2B"
-        colorLetra = 'Black'
-        
+    indices = models.IndicesPorCiudad(ciudad)
+    cantidadClientes = indices[0]
+    cantidadCompras = indices[1]
+    gastoPromedio = indices[2]
+    ProductosPromedioComprado = indices[3]
+    DatosOcupaciones = models.DatosOcupacionesPorCiudad(ciudad)
+    ClintesPorOcupacion = []
+    GastoPromedioOcupacion = []
+    for item in DatosOcupaciones:
+        ClintesPorOcupacion.append((float(np.log10(item[0])) * 3.5))
+        GastoPromedioOcupacion.append(float(item[1]))
+
+    ProductosPorCategoria = models.ProductosVendidosPorCiudad(ciudad)
+
+    ciudades_colores = {
+        "A": {"color": "#590212", "colorLetra": "white"},
+        "B": {"color": "#a60f48", "colorLetra": "white"},
+        "C": {"color": "#D97C2B", "colorLetra": "Black"}
+    }
+
+    color = ciudades_colores[ciudad]["color"]
+    colorLetra = ciudades_colores[ciudad]["colorLetra"]
+
     context = {
         'color' : color,
         'colorLetra' : colorLetra,
@@ -190,18 +180,14 @@ def ComprasCiudad(request, ciudad):
         'gastoPromedio' : gastoPromedio,
         'ProductosPorCategoria' : ProductosPorCategoria,
         'GastoPromedioOcupacion' : GastoPromedioOcupacion,
-        'ClintesPorOcupacionFinal' : ClintesPorOcupacionFinal,
+        'ClintesPorOcupacionFinal' : ClintesPorOcupacion,
         'ContarProductosPromedioPorCiudad' : ProductosPromedioComprado,
     }
     
     return render(request, 'ComprasCiudad.html', context)
 
-
 def estadoCivil(resquest, estadoCivil):
-    
-    from .models import (ContarRegistrosPorEstadoCivil, PromedioProductosCompradosPorEstadoCivil, GastoPromedioPorEstadoCivil,
-                        ContarProductosPorCategoriaYEstadoCivil, GastoPromedioPorOcupacionYEstadoCivil, ContarClientesPorOcupacionYEstadoCivil)
-    
+
     estadoCivil = estadoCivil.lower()
     if estadoCivil == 'solteros':
         seleccion = 0
@@ -211,19 +197,19 @@ def estadoCivil(resquest, estadoCivil):
         seleccion = 1
         color = '#a60f48'
         colorLetra = 'white'
-        
-    cantidadRegistros = ContarRegistrosPorEstadoCivil(seleccion)
-    PromedioProductosComprados = PromedioProductosCompradosPorEstadoCivil(seleccion)
-    GastoPromedio = GastoPromedioPorEstadoCivil(seleccion)
-    ContarProductosPorCategoria = ContarProductosPorCategoriaYEstadoCivil(seleccion)
-    GastoPromedioPorOcupacion = GastoPromedioPorOcupacionYEstadoCivil(seleccion)
+
+    cantidadRegistros = models.ContarRegistrosPorEstadoCivil(seleccion)
+    PromedioProductosComprados = models.PromedioProductosCompradosPorEstadoCivil(seleccion)
+    GastoPromedio = models.GastoPromedioPorEstadoCivil(seleccion)
+    ContarProductosPorCategoria = models.ContarProductosPorCategoriaYEstadoCivil(seleccion)
+    GastoPromedioPorOcupacion = models.GastoPromedioPorOcupacionYEstadoCivil(seleccion)
     ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    ContarClientesPorOcupacion = ContarClientesPorOcupacionYEstadoCivil(seleccion)
-    
+    ContarClientesPorOcupacion = models.ContarClientesPorOcupacionYEstadoCivil(seleccion)
+
     ClintesPorOcupacionFinal = []
     for x in range(len(ContarClientesPorOcupacion)):
         ClintesPorOcupacionFinal.append((float(np.log10(ContarClientesPorOcupacion[x]))*3.5))
-    
+
     context = {
         'color' : color,
         'colorLetra' : colorLetra,
@@ -241,9 +227,6 @@ def estadoCivil(resquest, estadoCivil):
     return render(resquest, 'estadoCivil.html', context)
 
 def Genero(resquest, genero):
-    from .models import (ContarRegistrosPorGenero, CantidadPromedioProductosPorGenero, GastoPromedioPorGenero, 
-                        CantidadProductosPorCategoriaYGenero, ContarClientesPorOcupacionYGenero,
-                        PrecioFacturaPromedioPorOcupacionYGenero)
     
     genero = genero.lower()
     if genero == 'hombres':
@@ -255,13 +238,13 @@ def Genero(resquest, genero):
         color = '#590212'
         colorLetra = 'white'
         
-    CantidadRegistros = ContarRegistrosPorGenero(seleccion)
-    PromedioProductosComprados = CantidadPromedioProductosPorGenero(seleccion)
-    GastoPromedio = GastoPromedioPorGenero(seleccion)
-    ContarProductosPorCategoria = CantidadProductosPorCategoriaYGenero(seleccion)
+    CantidadRegistros = models.ContarRegistrosPorGenero(seleccion)
+    PromedioProductosComprados = models.CantidadPromedioProductosPorGenero(seleccion)
+    GastoPromedio = models.GastoPromedioPorGenero(seleccion)
+    ContarProductosPorCategoria = models.CantidadProductosPorCategoriaYGenero(seleccion)
     ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
-    ContarClientesPorOcupacion = ContarClientesPorOcupacionYGenero(seleccion)
-    GastoPromedioPorOcupacion =  PrecioFacturaPromedioPorOcupacionYGenero(seleccion)
+    ContarClientesPorOcupacion = models.ContarClientesPorOcupacionYGenero(seleccion)
+    GastoPromedioPorOcupacion =  models.PrecioFacturaPromedioPorOcupacionYGenero(seleccion)
     ClintesPorOcupacionFinal = []
     for x in range(len(ContarClientesPorOcupacion)):
         ClintesPorOcupacionFinal.append((float(np.log10(ContarClientesPorOcupacion[x]))*3.5))
@@ -288,5 +271,16 @@ def Homepage(request):
     return render(request, 'Homepage.html')
 
 def Login(request):
-    
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = request.POST.get('password', '')
+
+        # Validar las credenciales
+        if username == 'admin' and password == '1234':  # Ejemplo básico
+            print('AAAAAAAAAAAAAAAAAA')
+            return redirect('DashboardInicial')  # Redirige a la vista 'Index'
+        else:
+            print('OOOOOOOOOOOOOOOOOO')
+            return render(request, 'Login.html', {'error': 'Usuario o contraseña incorrectos'})
     return render(request, 'Login.html')
+
