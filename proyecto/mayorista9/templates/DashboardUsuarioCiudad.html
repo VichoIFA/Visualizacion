@@ -1,0 +1,513 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página principal</title>
+    <script src="{% static 'chart.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootstrap-5.3.3-dist/css/bootstrap.min.css' %}">
+    <script src="{% static 'bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src = "{% static 'bootstrap-5.3.3-dist/js/bootstrap.min.js'}"></script>
+    <style>
+        .custom-navbar {
+            background-color: rgb(253, 126, 20);
+        }
+        
+        .sidebar {
+            background-color: #ff8a30;
+            box-shadow:-3px 0 10px 0 #555;
+
+        }
+        .sidebar .nav-link {
+            font-size: 18px;
+            color: #000000; 
+            font-weight: bold;
+        }
+        .sidebar .nav-link:hover {
+            background-color: #fc8128; 
+            color: #000000; 
+        }
+        .clickable-text {
+            cursor: pointer;
+        }
+
+        #sideNavDashboard {
+            transition: top 0.3s;
+        }
+        
+        #sideNavDashboard.full-width {
+            position: fixed;
+            width: 100% !important;
+            z-index: 1000;
+            top: 0; 
+        }
+        
+        @media (max-width: 767px) {
+            #sideNavDashboard {
+                width: 0; 
+                overflow: hidden !important;
+                display: none;
+            }
+        }
+        
+
+        .dropdown-toggle { outline: 0; }
+
+        .btn-toggle {
+            padding: .25rem .5rem;
+            font-weight: 600;
+            color: var(--bs-emphasis-color);
+            background-color: transparent;
+        }
+        .btn-toggle:hover,
+        .btn-toggle:focus {
+            color: rgba(var(--bs-emphasis-color-rgb), .85);
+            background-color: #f77b23;
+        }
+        
+        .btn-toggle::before {
+            width: 1.25em;
+            line-height: 0;
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%280,0,0,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+            transition: transform .35s ease;
+            transform-origin: .5em 50%;
+        }
+        
+        [data-bs-theme="dark"] .btn-toggle::before {
+            content: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='rgba%28255,255,255,.5%29' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M5 14l6-6-6-6'/%3e%3c/svg%3e");
+        }
+        
+            .btn-toggle[aria-expanded="true"] {
+            color: #151bd1
+        }
+            .btn-toggle[aria-expanded="true"]::before {
+            transform: rotate(90deg);
+        }
+        
+        .btn-toggle-nav a {
+            padding: .1875rem .5rem;
+            margin-top: .125rem;
+            margin-left: 1.25rem;
+        }
+            .btn-toggle-nav a:hover,
+            .btn-toggle-nav a:focus {
+            background-color: #f77b23;
+        }
+        
+        .scrollarea {
+            overflow-y: auto;
+        }
+        .custom-text {
+            font-size: 40px; 
+            font-weight: bold; 
+        }
+        footer {
+            background-color: #000000;
+            color: white;
+            text-align: center;
+            padding: 1px;
+            min-height: 30px;
+            font-size: 0.8em;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        footer nav ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        footer nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+
+<body class="d-flex flex-column min-vh-100" style="height: 100%;"> 
+
+    <nav class="navbar custom-navbar" style="border-bottom: 5px solid #e8e8e8;">
+        <div class="container-fluid d-flex align-items-center">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="60" height="55" class="d-inline-block align-text-top">
+                <h3 class="mb-0 ms-2">Mayorista 9</h3>
+            </a>
+
+            <div class="d-flex ms-2">
+                <span class="clickable-text ms-3">
+                    <h6 class="mb-0">Perfil</h6>
+                </span>
+                <span class="clickable-text ms-3">
+                    <h6 class="mb-0">Recursos</h6>
+                </span>
+            </div>
+
+            <img src="{% static 'images/perfil.png' %}" alt="Descripción de la imagen" width="50" height="50" class="rounded-circle">
+
+            <button class="navbar-toggler d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+    </nav>
+
+
+    <div class="container-fluid" style="border-bottom: 2px solid #1c1b1b; border-right: 2px solid #e8e8e8;">
+        <div class="row" style = "background-color: #e8e8e8">
+            
+            <div class="flex-shrink-0 p-3" id = "sideNavDashboard" style="width: 180px; height: auto; background-color: #fd7e14;; padding-bottom: 15px; padding-right: 0px;box-shadow:-3px 0 10px 0 #555;">
+                <a href="/" class="d-flex align-items-center pb-3 mb-3 link-body-emphasis text-decoration-none border-bottom" style = "color: black ">
+                    <svg class="bi pe-none me-2" width="32" height="24"><use xlink:href="#House"></use></svg>
+                    <span class="fs-5 fw-semibold" style = "color:black;">Menú</span>
+                </a style = "calor :#1c1b1b">
+                <ul class="list-unstyled ps-0">
+                    
+                <li class="mb-1">
+                    <button type = "button" id = "dashboard-btn" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboardCollapse" aria-expanded="false" aria-controls="dashboardCollapse"  style = "color:black; font-weight: bold;" >
+                        Dashboard
+                    </button>
+                    <div class="collapse" id="dashboardCollapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Idioma</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Configuracion de datos</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <button type="button" id="data-btn" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dataCollapse" aria-expanded="false" aria-controls="dataCollapse" style="color:black; font-weight: bold;">
+                    Estadisticas
+                </button>
+                <div class="collapse" id="dataCollapse">
+                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse" aria-expanded="false" aria-controls="subDashboardCollapse" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Producto 1 por edad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/0-17/0')">0-17</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/18-25/0')">18-25</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/36-45/0')">36-45</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/46-50/0')">46-50</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/51-55/0')">51-55</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/55+/0')">55+</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse2" aria-expanded="false" aria-controls="subDashboardCollapse2" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Producto 2 por edad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse2">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/0-17/1')">0-17</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/18-25/1')">18-25</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/26-35/1')">26-35</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/36-45/1')">36-45</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/46-50/1')">46-50</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/51-55/1')">51-55</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/55+/1')">55+</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse3" aria-expanded="false" aria-controls="subDashboardCollapse3" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Producto 3 por edad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse3">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/0-17/2')">0-17</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/18-25/2')">18-25</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/26-35/2')">26-35</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/36-45/2')">36-45</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/46-50/2')">46-50</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/51-55/2')">51-55</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/detalleBarrasAgrupadas/55+/2')">55+</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse4" aria-expanded="false" aria-controls="subDashboardCollapse4" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Productos por ciudad
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse4">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/ComprasCiudad/A')">Ciudad categoria A</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/ComprasCiudad/B')">Ciudad categoria B</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/ComprasCiudad/C')">Ciudad categoria C</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse5" aria-expanded="false" aria-controls="subDashboardCollapse5" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Datos por género
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse5">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/genero/Hombres')">Hombres</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded clickable-text" style="color:#606060;" onclick="openPage('/genero/Mujeres')">Mujeres</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#subDashboardCollapse6" aria-expanded="false" aria-controls="subDashboardCollapse6" style="color:black;  font-size: 13px; font-weight: bold;">
+                                Datos por estado civil
+                            </button>
+                            <div class="collapse" id="subDashboardCollapse6">
+                                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded  clickable-text" style="color:#606060;"  onclick="openPage('/estadoCivil/Casados')">Casados</a></li>
+                                    <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded  clickable-text" style="color:#606060;"  onclick="openPage('/estadoCivil/Solteros')">Solteros</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+                <li class="border-top my-3"></li>
+                    <li class="mb-1">
+                    <button type = "button" id = "account-btn" class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#accountCollapse" aria-expanded="false" aria-controls="accountCollapse" style = "color:black; font-weight: bold;">
+                        Cuenta
+                    </button>
+                    <div class="collapse" id="accountCollapse">
+                        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Perfil</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Configuraciones</a></li>
+                        <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded" style = "color:#606060;">Cerrar Sesión</a></li>
+                        </ul>
+                    </div>
+                    </li>
+                </ul>
+            </div>
+
+
+            <main class="col-md-9 mx-sm-auto mx-md-auto mx-lg-auto px-lg-0 px-md-0 px-sm-0"></main>
+                <div class="container-fluid">
+                    <div class="row" style = "margin-top: 15px">
+                        <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Cantidad de Clientes</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadClientes|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Cantidad de registros</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{cantidadCompras|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Promedio de productos comprados</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{ContarProductosPromedioPorCiudad|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
+                            <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
+                                <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+                                    <h5 class="card-title mb-0">Gasto promedio de compras</h5>
+                                </div>
+                                <div class="card-body p-4 bg-light">
+                                    <p class="card-text custom-text"">{{gastoPromedio|safe}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" style="padding-top: 30px">
+                    <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden;"> <!-- Cambia la altura aquí -->
+                            <div class="card-header text-white" style="background-color: #1c1b1b;">
+                                <h5 class="card-title mb-0">Cantidad de productos comprados por categoría</h5>
+                            </div>
+                            <div class="card-body p-4 bg-light">
+                                <canvas id="mainChart3" style="width: 100%; height: auto;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-xl-6" style="padding-bottom:30px">
+                        <div class="card text-center shadow-lg" style="border-radius: 15px; width: 100%; height: 350px; overflow: hidden; "> <!-- Cambia la altura aquí -->
+                            <div class="card-header text-white" style="background-color: #1c1b1b;">
+                                <h5 class="card-title mb-0">Gasto promedio por ocupación</h5>
+                            </div>
+                            <div class="card-body p-4 bg-light">
+                                <canvas id="mainChart4" style="width: 100%; height: auto;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <script>
+                
+                const mainChartData3 = {
+                    labels: ["Categoría 1", "Categoría 2", "categoria 3"],
+                    datasets: [
+                        {
+                            label: 'categoria productos',
+                            data: {{ ProductosPorCategoria|safe }},
+                            backgroundColor: ["#590212", "#a60f48", "#D97C2B"],
+                            borderColor: ["#590212", "#a60f48", "#D97C2B"],
+                            borderWidth: 1
+                        }
+                    ]
+                };
+                window.onload = function() {
+                var mainChartCtx3 = document.getElementById('mainChart3').getContext('2d');
+                var mainChart3 = new Chart(mainChartCtx3, {
+                    type: 'bar',
+                    data: mainChartData3,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false 
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Categoría de ciudad'
+                                }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Cantidad de compras'
+                                },
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                }
+
+                const xValues = {{ ocupaciones|safe }};
+                const yValues = {{ GastoPromedioOcupacion|safe }};
+                
+                const scatterData = xValues.map((x, index) => ({ x: x, y: yValues[index] }));
+
+                const mainChartData4 = {
+                    datasets: [
+                        {
+                            data:scatterData,
+                            backgroundColor: ["#db4500"],
+                            borderColor: ["#db4500"],
+                            borderWidth: 1,
+                            pointRadius: {{ClintesPorOcupacionFinal|safe}}
+                        }
+                    ]
+                };
+                
+                var mainChartCtx4 = document.getElementById('mainChart4').getContext('2d');
+                var mainChart4 = new Chart(mainChartCtx4, {
+                    type: 'scatter',  // Cambiado a 'scatter'
+                    data: mainChartData4,
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false 
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Número de ocupación'
+                                },
+                                type: 'linear',  // Define una escala lineal para el eje X
+                                position: 'bottom'
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Gasto promedio'
+                                },
+                                beginAtZero: true,
+                                type: 'linear'  // Define una escala lineal para el eje Y
+                            }
+                        }
+                    }
+                });
+                
+                document.addEventListener('DOMContentLoaded', function() {
+                                const sidebarToggleButton = document.querySelector('.navbar-toggler');
+                                const sidebarMenu = document.getElementById('sideNavDashboard');
+                                const mainContent = document.querySelector('main');
+                                const navbar = document.querySelector('.navbar');
+                                
+                                function adjustSidebarPosition() {
+                                    const navbarHeight = navbar.offsetHeight;
+                                    sidebarMenu.style.top = `${navbarHeight}px`;
+                                }
+                                
+                                function toggleSidebarVisibility() {
+                                    if (window.innerWidth <= 768) {
+                                        sidebarMenu.style.display = 'none'; 
+                                    } else {
+                                        sidebarMenu.style.display = 'block'; 
+                                        adjustSidebarPosition(); 
+                                    }
+                                }
+                                
+                                adjustSidebarPosition();
+                                toggleSidebarVisibility();
+                                
+                                window.addEventListener('resize', () => {
+                                    toggleSidebarVisibility(); 
+                                    adjustSidebarPosition(); 
+                                });
+                                
+                                sidebarToggleButton.addEventListener('click', function() {
+                                    if (sidebarMenu.style.display === 'block' || sidebarMenu.classList.contains('show')) {
+                                        sidebarMenu.classList.remove('show', 'full-width');
+                                        sidebarMenu.style.display = 'none';
+                                        mainContent.style.display = 'block';
+                                        navbar.classList.remove('fixed-top');
+                                    } else {
+                                        sidebarMenu.classList.add('show', 'full-width');
+                                        sidebarMenu.style.display = 'block';
+                                        navbar.classList.add('fixed-top');
+                                    }
+                                });
+                            });
+                            
+            </script>
+        </div>
+    </body>
+</html>
+
+<footer class = "mt-auto">
+    <p>&copy; 2024 Mayorista9. Todos los derechos reservados.</p>
+    <p>Contáctanos: DinoTrayStudio@gmail.com</a></p>
+    </nav>
+</footer>

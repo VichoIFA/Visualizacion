@@ -9,5 +9,6 @@ urlpatterns = [
     path('detalleBarrasAgrupadas/<str:label>/<str:index>', views.BarrasAgrupadas, name='BarrasAgrupadas'),
     path('ComprasCiudad/<str:ciudad>', views.ComprasCiudad, name='ComprasCiudad'),
     path('genero/<str:genero>', views.Genero, name='genero'),
-    path('estadoCivil/<str:estadoCivil>', views.estadoCivil, name='estadoCivil')
+    path('estadoCivil/<str:estadoCivil>', views.estadoCivil, name='estadoCivil'),
+    path('DashboardUsuarioCiudad/<str:ciudad>', views.DashboardUsuarioCiudad, name='DashboardUsuarioCiudad')
 ]

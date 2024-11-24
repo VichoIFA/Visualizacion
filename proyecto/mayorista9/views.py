@@ -284,3 +284,46 @@ def Login(request):
             return render(request, 'Login.html', {'error': 'Usuario o contraseña incorrectos'})
     return render(request, 'Login.html')
 
+def DashboardUsuarioCiudad(request, ciudad):
+
+    ocupaciones = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    
+    indices = models.IndicesPorCiudad(ciudad)
+    cantidadClientes = indices[0]
+    cantidadCompras = indices[1]
+    gastoPromedio = indices[2]
+    ProductosPromedioComprado = indices[3]
+    DatosOcupaciones = models.DatosOcupacionesPorCiudad(ciudad)
+    ClintesPorOcupacion = []
+    GastoPromedioOcupacion = []
+    for item in DatosOcupaciones:
+        ClintesPorOcupacion.append((float(np.log10(item[0])) * 3.5))
+        GastoPromedioOcupacion.append(float(item[1]))
+
+    ProductosPorCategoria = models.ProductosVendidosPorCiudad(ciudad)
+
+    ciudades_colores = {
+        "A": {"color": "#590212", "colorLetra": "white"},
+        "B": {"color": "#a60f48", "colorLetra": "white"},
+        "C": {"color": "#D97C2B", "colorLetra": "Black"}
+    }
+
+    color = ciudades_colores[ciudad]["color"]
+    colorLetra = ciudades_colores[ciudad]["colorLetra"]
+
+    context = {
+        'color' : color,
+        'colorLetra' : colorLetra,
+        'categoria' : ciudad,
+        'ocupaciones' : ocupaciones,
+        'cantidadClientes' : cantidadClientes,
+        'cantidadCompras' : cantidadCompras,
+        'gastoPromedio' : gastoPromedio,
+        'ProductosPorCategoria' : ProductosPorCategoria,
+        'GastoPromedioOcupacion' : GastoPromedioOcupacion,
+        'ClintesPorOcupacionFinal' : ClintesPorOcupacion,
+        'ContarProductosPromedioPorCiudad' : ProductosPromedioComprado,
+    }
+    
+    return render(request, 'DashboardUsuarioCiudad.html', context)
+
