@@ -333,7 +333,18 @@ def DashboardUsuarioCiudad(request, ciudad):
 
 def Profundizacion(request, ciudad, producto):
     
+    producto_colores = {
+        "0": {"color": "#590212", "colorLetra": "white"},
+        "1": {"color": "#a60f48", "colorLetra": "white"},
+        "2": {"color": "#D97C2B", "colorLetra": "Black"}
+    }
+    
+    color = producto_colores[producto]["color"]
+    colorLetra = producto_colores[producto]["colorLetra"]
+    producto = int(producto) + 1
+    
     datosIndices = models.DetalleBoletasCiudadCategoria(ciudad, producto)
+    print(datosIndices)
     cantidadRegistros = datosIndices[0]
     cantidadClientes = datosIndices[1]
     gastoPromedio = datosIndices[2]
@@ -349,15 +360,7 @@ def Profundizacion(request, ciudad, producto):
         estadia.append(x[0])
         cantidad.append(x[1])
     
-    producto_colores = {
-        "0": {"color": "#590212", "colorLetra": "white"},
-        "1": {"color": "#a60f48", "colorLetra": "white"},
-        "2": {"color": "#D97C2B", "colorLetra": "Black"}
-    }
-    
-    color = producto_colores[producto]["color"]
-    colorLetra = producto_colores[producto]["colorLetra"]
-    producto = int(producto) + 1
+
     context = {
         "color" : color,
         "colorLetra" : colorLetra,
