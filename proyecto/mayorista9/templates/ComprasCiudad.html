@@ -29,7 +29,7 @@
             <div class="col-md-12 col-lg-3 col-xl-3 mb-4 mb-sm-3">
                 <div class="card text-center shadow-lg" style="border-radius: 15px; height: 100%; overflow: hidden;">
                     <div class="card-header text-white" style="background-color: #1c1b1b; border-top-left-radius: 15px; border-top-right-radius: 15px;">
-                        <h5 class="card-title mb-0">Cantidad de Clientes</h5>
+                        <h5 class="card-title mb-0">Cantidad de clientes</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
                         <p class="card-text custom-text"">{{cantidadClientes|safe}}</p>
@@ -62,7 +62,7 @@
                         <h5 class="card-title mb-0">Gasto promedio de compras</h5>
                     </div>
                     <div class="card-body p-4 bg-light">
-                        <p class="card-text custom-text"">{{gastoPromedio|safe}}</p>
+                        <p class="card-text custom-text"">${{gastoPromedio|safe}}</p>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
                     x: {
                         title: {
                             display: true,
-                            text: 'Categoría de ciudad'
+                            text: 'Categoría de producto'
                         }
                     },
                     y: {
@@ -133,7 +133,78 @@
                         },
                         beginAtZero: true
                     }
+                },
+                onClick: async (event, elements) => {
+                    if (elements.length > 0) {
+                        var index = elements[0].index;
+
+                        try {   
+                            const link = `/profundizacion/{{categoria|safe}}/${index}`;
+                            const width = 500; 
+                            const height = 700; 
+                
+                            const left = window.screenX + (window.innerWidth / 2) - (width / 2);
+                            const top = window.screenY + (window.innerHeight / 2) - (height / 2);
+                
+                            const nuevaVentana = window.open("", "_blank", `width=${width},height=${height},top=${top},left=${left},resizable=yes`);
+                
+                            if (nuevaVentana) {
+
+                                nuevaVentana.document.open();
+                                nuevaVentana.document.write(`
+                                    <!DOCTYPE html>
+                                    <html lang="en">
+                                    <head>
+                                        <meta charset="UTF-8">
+                                        <title>Cargando...</title>
+                                        <style>
+                                            body { display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; }
+                                            .lds-dual-ring {
+                                                color: #000;
+                                            }
+                                            .lds-dual-ring, .lds-dual-ring:after {
+                                                box-sizing: border-box;
+                                            }
+                                            .lds-dual-ring {
+                                                display: inline-block;
+                                                width: 80px;
+                                                height: 80px;
+                                            }
+                                            .lds-dual-ring:after {
+                                                content: " ";
+                                                display: block;
+                                                width: 64px;
+                                                height: 64px;
+                                                margin: 8px;
+                                                border-radius: 50%;
+                                                border: 6.4px solid currentColor;
+                                                border-color: currentColor transparent currentColor transparent;
+                                                animation: lds-dual-ring 1.2s linear infinite;
+                                            }
+                                            @keyframes lds-dual-ring {
+                                                0% { transform: rotate(0deg); }
+                                                100% { transform: rotate(360deg); }
+                                            }
+                                        </style>
+                                    </head>
+                                    <body>
+                                        <div class="lds-dual-ring"></div>
+                                    </body>
+                                    </html>
+                                `);
+                                nuevaVentana.document.close();
+                
+                                // Redirigir a la URL de destino cuando esté lista
+                                nuevaVentana.location.href = link;
+                            } else {
+                                console.error("No se pudo abrir la nueva ventana.");
+                            }
+                        } catch (error) {
+                            console.error("Error al abrir la nueva ventana:", error);
+                        }
+                    }
                 }
+                
             }
         });
         }

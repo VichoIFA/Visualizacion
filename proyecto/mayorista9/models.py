@@ -269,3 +269,23 @@ def PrecioFacturaPromedioPorOcupacionYGenero(genero):
         result = cursor.fetchall()
         total = [int(row[0]) for row in result]
     return total
+
+def DetalleBoletasCiudadCategoria(CategoriaCiudad, producto):
+    with connection.cursor() as cursor:
+        cursor.callproc('DetalleCiudadCategoria',[CategoriaCiudad, producto])
+        result = cursor.fetchone()
+    return result
+
+def DatosClientesPorGeneroCiudad(CategoriaCiudad, producto):
+    with connection.cursor() as cursor:
+        cursor.callproc('ObtenerClientesPorGeneroCiudadCategoria',[CategoriaCiudad, producto])
+        result = cursor.fetchall()
+        total = [int(row[0]) for row in result]
+    return total
+
+def ContarComprasPorEstadiaCiudadCategoria(CategoriaCiudad, producto):
+    with connection.cursor() as cursor:
+        cursor.callproc('ContarComprasPorEstadiaCiudadCategoria',[CategoriaCiudad, producto])
+        result = cursor.fetchall()
+        total = [list(row) for row in result]
+    return total

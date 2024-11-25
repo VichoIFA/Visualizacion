@@ -275,12 +275,15 @@ def Login(request):
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
 
-        # Validar las credenciales
-        if username == 'admin' and password == '1234':  # Ejemplo básico
-            print('AAAAAAAAAAAAAAAAAA')
-            return redirect('DashboardInicial')  # Redirige a la vista 'Index'
+        if username == 'admin' and password == '1234':
+            return redirect('DashboardInicial') 
+        if username == 'trabajadorCiudad_A' and password == 'ciudadA':
+            return redirect('DashboardUsuarioCiudad/A')
+        if username == 'trabajadorCiudad_B' and password == 'ciudadB':
+            return redirect('DashboardUsuarioCiudad/B')        
+        if username == 'trabajadorCiudad_C' and password == 'ciudadC':
+            return redirect('DashboardUsuarioCiudad/B')
         else:
-            print('OOOOOOOOOOOOOOOOOO')
             return render(request, 'Login.html', {'error': 'Usuario o contraseña incorrectos'})
     return render(request, 'Login.html')
 
@@ -310,7 +313,7 @@ def DashboardUsuarioCiudad(request, ciudad):
 
     color = ciudades_colores[ciudad]["color"]
     colorLetra = ciudades_colores[ciudad]["colorLetra"]
-
+    ciudad = ciudad
     context = {
         'color' : color,
         'colorLetra' : colorLetra,
@@ -323,7 +326,51 @@ def DashboardUsuarioCiudad(request, ciudad):
         'GastoPromedioOcupacion' : GastoPromedioOcupacion,
         'ClintesPorOcupacionFinal' : ClintesPorOcupacion,
         'ContarProductosPromedioPorCiudad' : ProductosPromedioComprado,
+        'ciudad' : ciudad
     }
     
     return render(request, 'DashboardUsuarioCiudad.html', context)
+
+def Profundizacion(request, ciudad, producto):
+    
+    datosIndices = models.DetalleBoletasCiudadCategoria(ciudad, producto)
+    cantidadRegistros = datosIndices[0]
+    cantidadClientes = datosIndices[1]
+    gastoPromedio = datosIndices[2]
+    
+    datosGenero = models.DatosClientesPorGeneroCiudad(ciudad,producto)
+    mujeres = datosGenero[0]
+    hombres = datosGenero[1]
+    
+    datosComprasPorEstadia = models.ContarComprasPorEstadiaCiudadCategoria(ciudad,producto)
+    
+    estadia,cantidad = [],[]
+    for x in datosComprasPorEstadia:
+        estadia.append(x[0])
+        cantidad.append(x[1])
+    
+    producto_colores = {
+        "0": {"color": "#590212", "colorLetra": "white"},
+        "1": {"color": "#a60f48", "colorLetra": "white"},
+        "2": {"color": "#D97C2B", "colorLetra": "Black"}
+    }
+    
+    color = producto_colores[producto]["color"]
+    colorLetra = producto_colores[producto]["colorLetra"]
+    producto = int(producto) + 1
+    context = {
+        "color" : color,
+        "colorLetra" : colorLetra,
+        "ciudad" : ciudad,
+        "producto" : producto,
+        "cantidadRegistros" : cantidadRegistros,
+        "cantidadClientes" : cantidadClientes,
+        "gastoPromedio" : gastoPromedio,
+        "hombres" : hombres,
+        "mujeres" : mujeres,
+        "estadia" : estadia,
+        "cantidadEstadia" : cantidad,
+    }
+
+    return render(request, 'ProfundizacionTrabajador.html', context)
 
